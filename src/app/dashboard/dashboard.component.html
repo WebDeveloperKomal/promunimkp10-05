@@ -376,37 +376,21 @@
 
                         </div>
 
-                         <div class="widget-body" *ngIf="shownewsalert">
-                            <div class="widget-main">
+                         <div class="widget-body" *ngIf="shownewsalert" >
+                            <div class="widget-main" *ngFor="let data of NewsAlertList">
 
                                 <div class="alertbox ng-scope" ng-repeat="na in newsAlertData">
                                     <p class="alert alert-info"><a href="#" ng-click="" class="ng-binding">Revision
                                             of Fees for Rural </a> &nbsp;&nbsp;&nbsp;&nbsp;
-
-                                        <br><i class="ins-info ng-binding">Inserted By : SYSTEM ADMIN
-                                            &nbsp;&nbsp;&nbsp;&nbsp; Branch : Hadapsar
-                                            <br>Department : Support - ADMINISTRATIVE &nbsp;&nbsp;&nbsp;&nbsp;
-                                            Date : 2019-11-18
+                                        <br><i class="ins-info ng-binding">Inserted By : {{data.insertedByF}} {{data.insertedByL}}
+                                            &nbsp;&nbsp;&nbsp;&nbsp; Branch : {{data.empBranch}}
+                                            <br>Department : {{data.empDept}} &nbsp;&nbsp;&nbsp;&nbsp;
+                                            Date : {{data.date}}
                                         </i>
                                     </p>
-
-                                </div>
-                                <div class="alertbox ng-scope" ng-repeat="na in newsAlertData">
-                                    <p class="alert alert-info"><a href="#" ng-click="viewAlertDis(na.newsAlertId)"
-                                            class="ng-binding">CRM
-                                            Updation. </a> &nbsp;&nbsp;&nbsp;&nbsp;
-
-                                        <br><i class="ins-info ng-binding" style="font-size: 10px;">Inserted By : SYSTEM ADMIN
-                                            &nbsp;&nbsp;&nbsp;&nbsp; Branch : Hadapsar
-                                            <br>Department : Support - ADMINISTRATIVE &nbsp;&nbsp;&nbsp;&nbsp;
-                                            Date : 2018-06-19
-                                        </i>
-                                    </p>
-
                                 </div>
                             </div>
                         </div> 
-                    <!-- </div> -->
                 </div>
 
                 <div class="col-sm-6">
@@ -429,8 +413,7 @@
                                         d="M3.80977 4.47631C3.73871 5.55902 2.85796 6.37807 1.83882 6.31262C0.733673 6.24156 -0.0666737 5.3552 0.00438506 4.27623C0.0717039 3.23465 0.993598 2.43431 2.03704 2.50537C3.05617 2.57642 3.87522 3.4871 3.80977 4.47631Z"
                                         fill="#3BB161" />
                                 </svg>&nbsp;&nbsp;
-
-                                Latest Customer Interaction
+                                Latest Customer Interaction 
                             </p>
                             <div class="widget-toolbar" style="float: right;">
                                 <!-- ngIf: true --><a data-action="reload" ng-if="true"

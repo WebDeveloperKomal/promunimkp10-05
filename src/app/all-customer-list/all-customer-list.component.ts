@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AllCustomerListModel } from './all-customer-list.component.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BranchModel } from '../branch/branch.component.model';
 import { ApiService } from '../api.service';
 import { Router } from '@angular/router';
@@ -44,6 +44,7 @@ export class AllCustomerListComponent {
   maxSize: number = 6;
 
   allCust:AllCustomerListModel[]=[];
+
   originalallCust : AllCustomerListModel[] = [] ;
 
   constructor(private formBuilder: FormBuilder , private api:ApiService ,private service:SecurityService, private apiService:ApiService, private router:Router ) {
@@ -72,6 +73,12 @@ ngOnInit(){
       console.error('API Error:', error);
     }
   );
+
+  this.employeeForm = new FormGroup({
+    branch: new FormControl(''),
+    fromDate: new FormControl(''),
+    toDate: new FormControl('')
+  });
 
 
   this.Perstring = localStorage.getItem('permissions');
@@ -125,6 +132,20 @@ ngOnInit(){
     }
   );
 }
+
+AllCustListByBranch(){
+      const formData = this.employeeForm.value;
+      this.apiService.allCustListByBranch(formData).subscribe(
+        (response: any) => {
+          console.log('Filtered data:', response.data);
+          this.allCust  = response.data;
+        },
+        (error: any) => {
+          console.error('Error fetching filtered data:', error);
+        }
+      );
+  }
+ 
 
 edit(id : any){
   this.router.navigate(['/set/view-customer-details/'+id]);

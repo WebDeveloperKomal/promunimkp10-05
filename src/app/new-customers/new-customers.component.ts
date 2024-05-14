@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NewCustomerModel } from './new-customers.component.model';
 import { ApiService } from '../api.service';
 import Swal from 'sweetalert2';
@@ -22,9 +22,17 @@ export class NewCustomersComponent {
   employeeForm !: FormGroup;
   custForm1 !: FormGroup;
   products:ProductsModel[]=[];
-  temCustomerList:NewCustomerModel[]=[];
+  // temCustomerList:NewCustomerModel[]=[];
   originalCustomerList : NewCustomerModel[] = [] ;
   selecteddata : any ;
+
+  branches: any[] = [];
+  EmployeesList: any[] = [];
+  insertTime: any[] = []; // Assuming you have this data available
+  updateTime: any[] = []; // Assuming you have this data available
+  temCustomerList: any[] = [];
+
+  filteredCustomerList: any[] = [];
 
   permissions: any;
   Perstring:any;
@@ -38,9 +46,11 @@ export class NewCustomersComponent {
 
   constructor(private formBuilder: FormBuilder, private apiService:ApiService) {
     this.employeeForm = this.formBuilder.group({
-      branch: ['', Validators.required], // Add validation if needed
+      branchId: ['', Validators.required], // Add validation if needed
       fromdate: ['', Validators.required], // Add validation if needed
-      todate: ['', Validators.required] // Add validation if needed
+      todate: ['', Validators.required], // Add validation if needed
+      insertTime: ['', Validators.required],
+      updateTime : ['', Validators.required]
     });
 
     this.custForm1 = this.formBuilder.group({
@@ -96,7 +106,134 @@ export class NewCustomersComponent {
       (res:any)=>{this.products = res.data},
       (err:any)=>{console.error(err);}
     )
+
+    this.apiService.allBranches().subscribe(
+      (responce:any)=>{
+        this.branches=responce.data;
+      },
+      (error:any)=>{
+        console.error(error);        
+      }
+    )
+
+    this.employeeForm =this.formBuilder.group({
+      branchId: [''],
+      insertTime: [''],
+      updateTime: [''],
+      companyName: [''],
+    });
   }
+
+  AllNewCustByBranch(){
+      const formData = this.employeeForm.value;
+      this.apiService.allNewCustByBranch(formData).subscribe(
+        (response: any) => {
+          console.log('Filtered data:', response.data);
+          this.temCustomerList  = response.data;
+        },
+        (error: any) => {
+          console.error('Error fetching filtered data:', error);
+        }
+      );
+  }
+ 
+
+  // AllNewCustByBranch(): void {
+  //   // Retrieve form values
+  //   const formData = this.employeeForm.value;
+
+  //   // Check if any form control has value
+  //   const hasValue = Object.values(formData).some(val => val !== null && val !== '');
+
+  //   if (hasValue) {
+  //     // Call API with form data
+  //     this.apiService.allNewCustByBranch(formData).subscribe(
+  //       (response: any) => {
+  //         console.log('Filtered data:', response.data);
+  //         // Update temCustomerList with the filtered data
+  //         this.temCustomerList = response.data;
+  //       },
+  //       (error: any) => {
+  //         console.error('Error fetching filtered data:', error);
+  //       }
+  //     );
+  //   } else {
+  //     // If no form control has value, fetch all data
+  //     this.apiService.allTempCustomers().subscribe(
+  //       (response: any) => {
+  //         console.log('All data:', response.data);
+  //         // Update temCustomerList with all data
+  //         this.temCustomerList = response.data;
+  //       },
+  //       (error: any) => {
+  //         console.error('Error fetching all data:', error);
+  //       }
+  //     );
+  //   }
+  // }
+
+  
+  // AllNewCustByBranch(): void {
+  //   Retrieve form values
+  //   const formData = this.employeeForm.value;
+  
+  //   Check if any form control has value
+  //   const hasValue = Object.values(formData).some(val => val !== null && val !== '');
+  
+  //   if (hasValue) {
+  //     Call API with form data
+  //     this.apiService.allNewCustByBranch(formData).subscribe(
+  //       (response: any) => {
+  //         console.log('Filtered data:', response.data);
+  //         Map the fields from the filter API response to the fields in the get API response
+  //         const mappedData = response.data.map((item: any) => ({
+  //           customerFullName: item.tempCustFullName,
+  //           leadStatus: item.tempCustLeadStatus,
+  //           tempCustBranchId: item.tempCustBranchId,
+  //           address: item.tempCustAddesss,
+  //           productId: item.tempCustProductId,
+  //           city: item.tempCustcity,
+  //           companyName: item.tempCustCompanyName,
+  //           tempCustCreationDate: item.tempCustCreationDate,
+  //           emailId: item.tempCustEmailId,
+  //           natureOfBussiness: item.tempCustBussiNature,
+  //           productName: item.tempCustProduct,
+  //           maintainingITR: item.tempCustMaintITR,
+  //           attendedByLN: item.attendedByLN,
+  //           leadType: item.tempCustLeadType,
+  //           pinCode: item.tempCustPinCode,
+  //           segment: item.tempCustSegment,
+  //           customerId: item.tempCustId,
+  //           constitutionOfCompany: item.tempCustConstitution,
+  //           attendedByFN: item.attendedByFN,
+  //           altContactNo: item.tempCustAltContactNo,
+  //           contactNo: item.tempCustContactNo,
+  //           tempCustBranchName: item.tempCustBranchName
+  //         }));
+          
+  //         Update temCustomerList with the mapped data
+  //         this.temCustomerList = mappedData;
+  //       },
+  //       (error: any) => {
+  //         console.error('Error fetching filtered data:', error);
+  //       }
+  //     );
+  //   } else {
+  //     If no form control has value, fetch all data
+  //     this.apiService.allTempCustomers().subscribe(
+  //       (response: any) => {
+  //         console.log('All data:', response.data); 
+  //         Log all data to console
+  //         Update temCustomerList with all data
+  //         this.temCustomerList = response.data;
+  //       },
+  //       (error: any) => {
+  //         console.error('Error fetching all data:', error);
+  //       }
+  //     );
+  //   }
+  // }
+  
 
   update(){
     console.log(this.custForm1.value);
@@ -136,7 +273,7 @@ export class NewCustomersComponent {
           (response:any)=>{
             console.log(response.data); 
             Swal.fire({
-              title: "Record Deleted!",
+              title: "Record Deleted!!!!",
               icon: "success"
             });
           },
@@ -148,7 +285,7 @@ export class NewCustomersComponent {
             });
           }
         );
-        // setInterval(()=>{window.location.reload()},1000);        
+        //setInterval(()=>{window.location.reload()},1000);  
       }
     });
     

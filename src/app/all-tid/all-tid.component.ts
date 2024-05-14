@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { AllTIDModel } from './all-tid.component.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BranchModel } from '../branch/branch.component.model';
 import { ApiService } from '../api.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -19,10 +19,13 @@ export class AllTIDComponent {
   currentPage: number = 1;
   countries: AllTIDModel[] | undefined;
   collectionSize =100;
-  TIDList:AllTIDModel[] = [];
+  // TIDList:AllTIDModel[] = [];
   originalTIDList : AllTIDModel[] = [] ;
-  branches:BranchModel[]=[];
+  // branches:BranchModel[]=[];
   tidForm !: FormGroup;
+
+  TIDList: any[] = []; // Initialize with an empty array
+  branches: any[] = []; // Assuming you have this data available
 
   permissions: any;
   Perstring:any;
@@ -34,13 +37,11 @@ export class AllTIDComponent {
   viewbranch!:boolean;
   viewall!:boolean;
 
-  constructor(private service:ApiService , private router:Router,private formBuilder: FormBuilder ) {
+  constructor(private service:ApiService , private router:Router,private formBuilder: FormBuilder ,private route: ActivatedRoute  ) {
     this.tidForm = this.formBuilder.group({
       branch: ['', Validators.required], // Add validation if needed
       fromDate: ['', Validators.required], // Add validation if needed
       toDate: ['', Validators.required] ,
-     
-     
     });
    }
  
@@ -61,6 +62,12 @@ export class AllTIDComponent {
       console.log('No permissions data found.');
     };
 
+    this.tidForm = new FormGroup({
+      branch: new FormControl(''),
+      fromDate: new FormControl(''),
+      toDate: new FormControl('')
+    });
+
     this.service.allTID().subscribe(
       ( data: any) => {
 
@@ -73,7 +80,6 @@ export class AllTIDComponent {
         console.error('API Error:', error);
       }
     );
-
     this.service.allBranches().subscribe(
       (responce:any)=>{
         this.branches=responce.data;
@@ -84,6 +90,15 @@ export class AllTIDComponent {
     )
   }
 
+  refreshComponent() {
+    // Get current query parameters
+    const currentParams = this.route.snapshot.queryParams;
+    // Navigate to the same route with the current query parameters
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: currentParams
+    });
+  }
   
   delete(id:number){
     Swal.fire({
@@ -113,9 +128,7 @@ export class AllTIDComponent {
         // setInterval(()=>{window.location.reload()},1000);        
       }
     });
-    
   }
-
 
   edit(id : any){
     this.router.navigate(['/set/tidgeneration/'+id]);
@@ -145,8 +158,6 @@ applyFilter(): void {
    
     // status: any;
    
-    
-   
   );
 }
 refreshCountries() {
@@ -168,4 +179,31 @@ onSubmit(){
     }
   )
 }
+
+// AllTidByBranch(){
+//   console.log("AllTidByBranch  :::::::::::" ,this.tidForm.value);
+//   this.service.allTidByBranch(this.tidForm.value).subscribe(
+//     (responce:any)=>{
+//       console.log('AllTidByBranch$$$$$$$$$$$$$$$$$$',responce.data);
+//     },
+//     (error:any)=>{
+//       console.error(error);        
+//     }
+//   )
+// }
+
+AllTidByBranch() {
+  console.log("AllTidByBranch  :::::::::::", this.tidForm.value);
+  this.service.allTidByBranch(this.tidForm.value).subscribe(
+    (response: any) => {
+      console.log('AllTidByBranch$$$$$$$$$$$$$$$$$$', response.data);
+      // Update TIDList with the response data
+      this.TIDList = response.data;
+    },
+    (error: any) => {
+      console.error(error);
+    }
+  );
+}
+
 }

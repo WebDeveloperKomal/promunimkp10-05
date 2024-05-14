@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AllDailyVisitModel } from './all-daily-visit.component.model';
 import { BranchModel } from '../branch/branch.component.model';
 import { ApiService } from '../api.service';
@@ -18,9 +18,14 @@ export class AllDailyVisitComponent {
   currentPage: number = 1;
   collectionSize = 100;
   dailyvisitssearch !: FormGroup;
-  visitList:AllDailyVisitModel[] = [];
+  // visitList:AllDailyVisitModel[] = [];
   originalvisitList : AllDailyVisitModel[] = [] ;
-  branches:BranchModel[]=[];
+  // branches:BranchModel[]=[];
+
+  visitList: any[] = [];
+  branches: any[] = []; // Assuming you have this data available
+  // pageSize: number = 10; // Assuming you have pagination setup
+
 
   permissions: any;
   Perstring:any;
@@ -54,6 +59,11 @@ export class AllDailyVisitComponent {
     } else {
       console.log('No permissions data found.');
     };
+
+
+    this.dailyvisitssearch = new FormGroup({
+      branch: new FormControl('')
+    });
 
     this.service.alldailyVisits().subscribe(
       ( data: any) => {
@@ -97,6 +107,7 @@ export class AllDailyVisitComponent {
     //   .map((country, i) => ({id: i + 1, ...country}))
     //   .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
+  
   onSubmit(){
     console.log("DATA :::::: " ,this.dailyvisitssearch.value);
     
@@ -110,4 +121,23 @@ export class AllDailyVisitComponent {
       }
     )
   }
+
+
+  AllTempCustByBranch(): void {
+    // Retrieve form values
+    const formData = this.dailyvisitssearch.value;
+
+    // Call API with form data
+    this.service.allTempCustByBranch(formData).subscribe(
+      (response: any) => {
+        console.log('Filtered data:', response.data);
+        // Update visitList with the filtered data
+        this.visitList = response.data;
+      },
+      (error: any) => {
+        console.error('Error fetching filtered data:', error);
+      }
+    );
+  }
+
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../api.service';
+import { NewsalertModel } from '../news-alert/news-alert.component.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -61,14 +62,23 @@ export class DashboardComponent {
     monthNotif:''
   }
 
-  constructor(private apiService:ApiService){}
+  NewsAlertList: NewsalertModel[] = [];
+  originalNewsAlertList : NewsalertModel[] = [] ;
+  collectionSize = 100;
+  // shownewsalert: boolean = true;
+
+  constructor(private apiService:ApiService){
+    
+  }
   
   newsalert(){
     this.shownewsalert = !this.shownewsalert ;
   }
+  
   customerIntraction(){
     this.showcustomerinteraction = !this.showcustomerinteraction
   }
+
   leadnotification(){
     this.showleadnotification = !this.showleadnotification
   }
@@ -148,6 +158,17 @@ ngOnInit(){
 
   // this.allLatestInteractions();
  
+  this.apiService.allNewsAlert().subscribe(
+    (data: any) => {
+      this.originalNewsAlertList = data.data;
+      this.NewsAlertList = this.originalNewsAlertList ;
+      console.log('Response successful!',data.data);
+      this.collectionSize = data.data.length;
+    },
+    (error: any) => {
+      console.error('API Error:', error);
+    }
+  )
 }
 
   allLatestInteractions(){

@@ -140,6 +140,7 @@ export class ApiService {
 
 
   /************************************** DEPARTMENTS ***************************************/
+
   allMainDepartments(): any {
     return this.http.get(`${this.baseUrl}/mainDepartment`);
   }
@@ -350,6 +351,14 @@ export class ApiService {
   }
 
 
+  allByBranch(data: any): any { //Not running create API
+    return this.http.post(`${this.baseUrl}/get-emp`, data);
+  }
+
+  
+  allNewCustByBranch(data: any): any { //Not running create API
+    return this.http.post(`${this.baseUrl}/getAllTempCust`, data);
+  }
 
 
   /************************************** Daily Visits ***************************************/
@@ -370,6 +379,9 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/branch-temp-customer-daily-visit`, data);
   }
 
+  allTempCustByBranch(data: any): any { //Not running create API
+    return this.http.post(`${this.baseUrl}/view-all-daily-visit`, data);
+  }
 
   /************************************** Daily Lead ***************************************/
 
@@ -388,6 +400,9 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/branch-temp-customer-daily-lead`, data);
   }
 
+  allTempCustByBranchLead(data: any): any { //Not running create API
+    return this.http.post(`${this.baseUrl}/view-all-daily-leads`, data);
+  }
   /************************************** All TID ***************************************/
 
   allTID(): any { // running
@@ -411,6 +426,10 @@ export class ApiService {
   }
   SearchTiddetails(data: any): any { //Not running create API
     return this.http.post(`${this.baseUrl}/all-branch-tid`, data);
+  }
+
+  allTidByBranch(data: any): any { //Not running create API
+    return this.http.post(`${this.baseUrl}/get-all-view-tid`, data);
   }
 
   /************************************** Customer Services ***************************************/
@@ -680,6 +699,10 @@ export class ApiService {
   /**************** All Customer List *************/
   allCustomer(): any { //running
     return this.http.get(`${this.baseUrl}/all-customers`);
+  }
+
+  allCustListByBranch(data: any): any { //Not running create API
+    return this.http.post(`${this.baseUrl}/get-all-customer`, data);
   }
 
   /**************** View Customer detail *************/

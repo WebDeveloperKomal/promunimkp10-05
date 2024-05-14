@@ -43,13 +43,13 @@
                                     
                                     <select formControlName="branch" class="form-select " >
                                       <option value="">---Select Branch---</option>
-                                      <option *ngFor="let branch of branches" value={{branch.branchName}}>{{branch.branchName}}</option>
+                                      <option *ngFor="let branch of branches" value={{branch.branchId}}>{{branch.branchName}}</option>
                                       </select>
                                       <label for="location">Select Branch :</label>
                                   </div>
                                   <div class="text-center col-lg-3 col-md-11 col-11 mt-xl-3">
           
-                                    <button type="button" class="col-3 col-lg-10 col-xl-5 btn  btn-info" style="text-align: center;" (click)="onSubmit()"  >
+                                    <button type="button" class="col-3 col-lg-10 col-xl-5 btn  btn-info" style="text-align: center;" (click)="AllTempCustByBranchLead()"  >
                                              Submit</button>
                                           <button type="reset" class="col-3 col-lg-10 col-xl-5 btn btn-info mt-lg-1" style="text-align: center;">
                                               Cancel      

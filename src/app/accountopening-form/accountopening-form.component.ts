@@ -352,7 +352,7 @@ export class AccountopeningFormComponent {
     // }
 
   // this.businessdetails1() ;
-  // this.businessdoc() ;
+  this.businessdoc() ;
   // this.authorizedsignatory1() ;
   // this.authorizedsignatory_remaining() ;
   // this.authorizedsignatory_2() ;
@@ -1074,7 +1074,7 @@ businessdoc(){
       (response: any) => {  
         this.getbusinessdocs = response.data ;
       
-        console.log("savePro response$$$$$$$3 ", response.data); 
+        console.log("############### response$$$$$$$3  ", response.data); 
         console.log("savePro response$$$$$$$4 ", response); 
     }, 
       (error: any) => {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AllDailyLeadsModel } from './alldailyleads.component.model';
 import { BranchModel } from '../branch/branch.component.model';
 import { ApiService } from '../api.service';
@@ -18,10 +18,13 @@ export class AlldailyleadsComponent {
   currentPage: number = 1;
   countries: AllDailyLeadsModel[] | undefined;
   collectionSize =100;
-  leadsList:AllDailyLeadsModel[] = [];
+  // leadsList:AllDailyLeadsModel[] = [];
   OriginalLeadsList: AllDailyLeadsModel[] = [] ;
   dailyleadform !: FormGroup;
-  branches:BranchModel[]=[];
+  // branches:BranchModel[]=[];
+
+  leadsList: any[] = [];
+  branches: any[] = [];
 
   permissions: any;
   Perstring:any;
@@ -55,6 +58,11 @@ ngOnInit(){
   } else {
     console.log('No permissions data found.');
   };
+
+
+  this.dailyleadform = new FormGroup({
+    branch: new FormControl('')
+  });
 
 
   this.service.alldailyLead().subscribe(
@@ -119,4 +127,22 @@ onSubmit(){
     }
   )
 }
+
+AllTempCustByBranchLead(): void {
+  // Retrieve form values
+  const formData = this.dailyleadform.value;
+
+  // Call API with form data
+  this.service.allTempCustByBranchLead(formData).subscribe(
+    (response: any) => {
+      console.log('Filtered data:', response.data);
+      // Update visitList with the filtered data
+      this.leadsList = response.data;
+    },
+    (error: any) => {
+      console.error('Error fetching filtered data:', error);
+    }
+  );
+}
+
 }

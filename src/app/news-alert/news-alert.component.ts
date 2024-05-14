@@ -16,9 +16,12 @@ export class NewsAlertComponent {
   dataarray: NewsalertModel[] = [];
   currentPage: number = 1;
   countries: NewsalertModel[] | undefined;
+  
   collectionSize = 100;
+
   NewsAlertList: NewsalertModel[] = [];
   originalNewsAlertList : NewsalertModel[] = [] ;
+
   permissions: any;
   Perstring:any;
   insertalert!:boolean;

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { EmployeeModel } from './employee.component.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { SecurityService } from '../security.service';
 import { AddEmployeeModel } from '../add-employee/addEmployeeModel';
@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { BranchModel } from '../branch/branch.component.model';
 import { DepartmentModel } from '../department/department.component.model';
 import { RoleModel } from '../add-employee/roleModel';
+
 
 @Component({
   selector: 'app-employee',
@@ -27,17 +28,25 @@ export class EmployeeComponent {
   userRole:any;
   employeeForm !: FormGroup;
   employeeForm1 !: FormGroup;
-  EmployeesList:EmployeeModel[]=[];
+  // EmployeesList:EmployeeModel[]=[];
   originalEmployeesList: EmployeeModel[] = [];
   employee:EmployeeModel = new EmployeeModel();
   EmployeeData:AddEmployeeModel = new AddEmployeeModel();
   empPhoto!: File;
   url: any;
   selecteddata : any ;
-  branches:BranchModel[] = [];
-  mainDeps=[{id:0,mainDepName:''}];
-  deps:DepartmentModel[] = [];
+  // branches:BranchModel[] = [];
+  // mainDeps=[{id:0,mainDepName:'' , mainDepId:''}];
+  // deps:DepartmentModel[] = [];
   roles: RoleModel[]=[];
+
+
+  // employeeForm: FormGroup;
+  EmployeesList: any[] = [];
+  branches: any[] = []; // Assuming you have this data available
+  mainDeps: any[] = []; // Assuming you have this data available
+  deps: any[] = []; // Assuming you have this data available
+  // pageSize: number = 10; // Assuming you have pagination setup
 
   permissions: any;
   Perstring:any;
@@ -52,7 +61,7 @@ export class EmployeeComponent {
   onFileSelected(event:any) {
     this.empPhoto = event.target.files[0];
   }
-  constructor(private formBuilder: FormBuilder , private service:SecurityService, private apiService:ApiService) {
+  constructor(private formBuilder: FormBuilder , private service:SecurityService, private apiService:ApiService , private service1: ApiService) {
     this.employeeForm = this.formBuilder.group({
       location: ['', Validators.required], 
       maindepartment: ['', Validators.required], 
@@ -96,6 +105,8 @@ export class EmployeeComponent {
     } else {
       console.log('No permissions data found in local storage.');
     };
+
+
     this.service.allEmployees().subscribe(
       (response:any)=>{
         console.log(response.data);        
@@ -107,6 +118,12 @@ export class EmployeeComponent {
         console.error(error);        
       }
     );
+
+    this.employeeForm = new FormGroup({
+      branchId: new FormControl(''),
+      maindepartment: new FormControl(''),
+      department: new FormControl('')
+    });
 
     this.apiService.allBranches().subscribe(
       (res:any)=>{this.branches = res.data},
@@ -133,6 +150,23 @@ export class EmployeeComponent {
     );
   }
 
+
+  onSubmit(): void {
+    // Retrieve form values
+    const formData = this.employeeForm.value;
+
+    // Call API with form data
+    this.service1.allByBranch(formData).subscribe(
+      (response: any) => {
+        console.log('Filtered data:', response.data);
+        // Update EmployeesList with the filtered data
+        this.EmployeesList = response.data;
+      },
+      (error: any) => {
+        console.error('Error fetching filtered data:', error);
+      }
+    );
+  }
   
   update(){
     console.log(this.employeeForm1.value,this.empPhoto);

@@ -24,12 +24,12 @@ L10n.load({
   styleUrls: ['./task-appointment.component.css']
 })
 export class TaskAppointmentComponent {
-
-  datasched : any[] = [] ;
+  tasks: any[] = [];
+datasched : any[] = [] ;
 dateparser(arg0: any) {
 throw new Error('Method not implemented.');
 }
-  public tasks: TaskAppointmentModel[] = [];
+  // public tasks: TaskAppointmentModel[] = [];
   // public eventSettings: EventSettingsModel = {};
   // public dataManager: DataManager = new DataManager();
   private dataManager: DataManager =  new DataManager(this.datasched)
@@ -77,10 +77,31 @@ public showQuickInfo: Boolean = false;
 constructor(private apiservice : ApiService , private http : HttpClient) {}
 ngOnInit(){
   
- this.fetchScheduleData() ;
+//  this.fetchScheduleData() ;
+
+
+  this.fetchTasks(); // Call the function to fetch tasks when the component initializes
 
 // console.log('rrrrrrrrrrrr' , this.dataManager);
 
+
+}
+
+fetchTasks(): void {
+  this.apiservice.getTask().subscribe(
+    (response: any) => {
+      // Check if response status is true and data is available
+      if (response.status && response.data) {
+        this.tasks = response.data; // Assign the fetched tasks to the tasks variable
+        console.log('Fetched tasks############:::::::::::::::::', this.tasks);
+      } else {
+        console.error('Failed to fetch tasks:', response);
+      }
+    },
+    (error : any) => {
+      console.error('Error fetching tasks:', error);
+    }
+  );
 }
 
 
@@ -100,6 +121,7 @@ ngOnInit(){
 //   }
 //   )
 // }
+
 addTask(): void {
   console.log("data", this.newevent)
   this.apiservice.addTask(this.newevent).subscribe((resp: any)=>{
@@ -118,7 +140,7 @@ addTask(): void {
             icon: "success"
           });
         }, 0);
-        this.fetchScheduleData() ;
+        this.fetchTasks() ;
       },
       (error:any)=>{
         console.error(error);
@@ -132,57 +154,58 @@ addTask(): void {
   )
 } 
 
-fetchScheduleData(){
-  //  this.apiservice.getTask1().subscribe((resp: any)=>{
-  //   console.log('Tasks **********', resp);
-  //  })
+
+// fetchScheduleData(){
+//   //  this.apiservice.getTask1().subscribe((resp: any)=>{
+//   //   console.log('Tasks **********', resp);
+//   //  })
      
 
-    // url: 'https://clientportal.promunim.com/auth/get-employee-tasks',
-    // adaptor: new ODataV4Adaptor,
-    // crossDomain: true ,
-    // credentials: 'include'
+//     // url: 'https://clientportal.promunim.com/auth/get-employee-tasks',
+//     // adaptor: new ODataV4Adaptor,
+//     // crossDomain: true ,
+//     // credentials: 'include'
 
-  this.apiservice.getTask().subscribe(
-    (resp: any) => {
-      console.log('Tasks retrieved successfully', resp.data);
-      this.datasched = resp.data
-      console.log("tttt", this.datasched);
+//   this.apiservice.getTask().subscribe(
+//     (resp: any) => {
+//       console.log('Tasks retrieved successfully', resp.data);
+//       this.datasched = resp.data
+//       console.log("tttt", this.datasched);
     
-      const transformedData = resp.data.map((item : any) => ({
-        Id: item.Id,
-        Subject: item.Subject,
-        StartTime: new Date(item.StartTime), // Ensure dates are correctly parsed
-        EndTime: new Date(item.EndTime),     // Ensure dates are correctly parsed
-        IsAllDay: item.IsAllDay,
-        IsBlock: item.IsBlock,
-        IsReadonly: item.IsReadonly,
-        ResourceId: item.ResourceId,
-        RoomId: item.RoomId
-      }));
-      this.datasched = transformedData;
+//       const transformedData = resp.data.map((item : any) => ({
+//         Id: item.Id,
+//         Subject: item.Subject,
+//         StartTime: new Date(item.StartTime), // Ensure dates are correctly parsed
+//         EndTime: new Date(item.EndTime),     // Ensure dates are correctly parsed
+//         IsAllDay: item.IsAllDay,
+//         IsBlock: item.IsBlock,
+//         IsReadonly: item.IsReadonly,
+//         ResourceId: item.ResourceId,
+//         RoomId: item.RoomId
+//       }));
+//       this.datasched = transformedData;
 
-      // Now, set the transformed data as the dataSource for the scheduler component
-      this.eventSettings.dataSource = new DataManager(this.datasched);
+//       // Now, set the transformed data as the dataSource for the scheduler component
+//       this.eventSettings.dataSource = new DataManager(this.datasched);
 
-      console.log("Transformed Data", this.datasched);
-      // const mappedData = resp.data.map((item: { id: any; title: any; startTime: string | number | Date; endTime: string | number | Date; allDay: any; }) => ({
-      //   Id: item.id,
-      //   Subject: item.title,
-      //   StartTime: new Date(item.startTime),
-      //   EndTime: new Date(item.endTime),
-      //   IsAllDay: item.allDay,
+//       console.log("Transformed Data", this.datasched);
+//       // const mappedData = resp.data.map((item: { id: any; title: any; startTime: string | number | Date; endTime: string | number | Date; allDay: any; }) => ({
+//       //   Id: item.id,
+//       //   Subject: item.title,
+//       //   StartTime: new Date(item.startTime),
+//       //   EndTime: new Date(item.endTime),
+//       //   IsAllDay: item.allDay,
       
-      // }));
-      // console.log('Mapped Data', mappedData);
+//       // }));
+//       // console.log('Mapped Data', mappedData);
       
 
-    },
-    (error: any) => {
-      console.log('Error retrieving tasks', error);
-    }
-  );
-}
+//     },
+//     (error: any) => {
+//       console.log('Error retrieving tasks', error);
+//     }
+//   );
+// }
 
 
 // public eventSettings: EventSettingsModel = { dataSource: this.tasks ,allowAdding: true };

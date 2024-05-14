@@ -44,50 +44,41 @@
             <form [formGroup]="employeeForm" class=" col-md-12 col-sm-12 col-xs-12 mt-1" id="emplform">
               <div class="row" >
                 <div class="form-floating col-lg-3 col-md-11 col-11 mb-3 mb-lg-0">
-                  <select formControlName="location" class="form-select">
+                  <select formControlName="branchId" class="form-select">
                     <option value="">Select Location</option>
                     <!-- <option value=""> ---Select --- </option> -->
-                    <option *ngFor="let branch of branches" [value]="branch.branchName">{{ branch.branchName }}
+                    <option *ngFor="let branch of branches" [value]="branch.branchId">{{ branch.branchName }}
                       </option>
                   </select>
                   <label for="location">Select Location :</label>
                 </div>
 
-              
-
                 <div class="form-floating col-lg-3 col-md-11 col-11 form-group mb-3 mb-lg-0">
-                  <select formControlName="maindepartment" class="form-select">
+                  <select formControlName="mainDepartment" class="form-select">
                     <option value="">Select Main Department</option>
-                      <option *ngFor="let data of mainDeps" [value]="data.mainDepName">{{ data.mainDepName }}
+                      <option *ngFor="let data of mainDeps" [value]="data.mainDepId">{{ data.mainDepName }}
                       </option>
                   </select> 
                   <label for="maindepartment">Select Main Department :</label>
                 </div>
 
                 <div class="form-floating col-lg-3 col-md-11 col-11 form-group mb-3 mb-lg-0">
-                 
                     <select formControlName="department" class="form-select">
                       <option value="">Select Department</option>    
-                      <option *ngFor="let data of deps" [value]="data.departmentName">{{ data.departmentName }}
+                      <option *ngFor="let data of deps" [value]="data.mainDepId">{{ data.departmentName }}
                         </option>
                     </select>
                     <label for="department">Select Department :</label>
-
                  </div>
-
                
                  <div class="text-center col-lg-3 col-md-11 col-11 mt-xl-3">
-                  <button type="button" class="col-3 col-lg-10 col-xl-5 btn  btn-info" style="text-align: center;"   >
+                  <button type="button" class="col-3 col-lg-10 col-xl-5 btn  btn-info" style="text-align: center;  " (click)="onSubmit()"  >
                            Submit</button>
                         <button type="reset" class="col-3 col-lg-10 col-xl-5 btn btn-info mt-lg-1 mt-xl-0" style="text-align: center;">
                             Cancel      
                          </button>
                    </div>
-
               </div>
-              
-               
-            
             </form>
 
 
@@ -133,7 +124,6 @@
                 <th>Department</th>
                 <th>Role</th>
                 <th *ngIf="view || updateemployee || deleteemployee">Action</th>
-  
               </tr>
           </thead>
           <tbody>
@@ -147,14 +137,12 @@
             <td>{{data.mainDepName}} - {{data.depName}}</td>
             <td>{{data.roleName}}</td>
               <td *ngIf="view || updateemployee || deleteemployee">
-
                 <button *ngIf="view" class="btn " 
                   data-bs-toggle="modal" data-bs-target="#exampleModal1" (click)="ShowDetails(data)" >
                   <svg width="4" height="15" viewBox="0 0 4 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3.04411 9.30684C3.04411 10.5495 3.05005 11.793 3.04241 13.0356C3.03647 13.9941 2.40285 14.6752 1.53173 14.6795C0.667388 14.6837 0.010864 13.9992 0.00662286 13.0407C-0.00270759 10.5122 -0.00270759 7.98446 0.0100157 5.45591C0.0151051 4.53559 0.694532 3.8621 1.547 3.87821C2.41388 3.89433 3.03647 4.56273 3.03987 5.49323C3.04411 6.76471 3.04072 8.03535 3.04072 9.30684C3.04241 9.30684 3.04326 9.30684 3.04411 9.30684Z" fill="#004C8C"/>
                     <path d="M0.132813 1.3996C0.131965 0.6116 0.73081 0.00512118 1.51626 3.18407e-05C2.29663 -0.0050575 2.92686 0.600574 2.94298 1.37076C2.95909 2.13925 2.29917 2.80341 1.5239 2.79917C0.752864 2.79493 0.133662 2.17233 0.132813 1.3996Z" fill="#004C8C"/>
-                    </svg>
-                    
+                    </svg>   
                 </button>
                 
 

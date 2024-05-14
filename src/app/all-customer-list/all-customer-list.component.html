@@ -66,35 +66,27 @@
             <form [formGroup]="employeeForm" class=" col-md-12 col-sm-12 col-xs-12 mt-1" id="emplform">
               <div class="row">
                 <div class="form-floating col-lg-3 col-md-11 col-11 mb-3 mb-lg-0">
-                  <select formControlName="location" class="form-select">
-                    <option *ngFor="let branch of branches" [value]="branch.branchName">{{ branch.branchName }}
+                  <select formControlName="branch" class="form-select">
+                    <option *ngFor="let branch of branches" [value]="branch.branchId">{{ branch.branchName }}
                     </option>
                   </select>
                   <label for="location">Select Location :</label>
                 </div>
 
-                <div class="form-floating col-lg-3 col-md-11 col-11 form-group mb-3 mb-lg-0">
-                  <select formControlName="maindepartment" class="form-select">
-
-                    <option *ngFor="let data of mainDeps" [value]="data.mainDepName">{{ data.mainDepName }}
-                    </option>
-                  </select>
-                  <label for="maindepartment">Select Main Department :</label>
+                <div class="form-floating col-lg-3 col-md-11 col-11 mb-3 mb-lg-0">
+                  <input type="date" formControlName="fromDate" class="form-control">
+                  <label for="department">From Date</label>
                 </div>
 
-                <div class="form-floating col-lg-3 col-md-11 col-11 form-group mb-3 mb-lg-0">
 
-                  <select formControlName="department" class="form-select">
-                    <option *ngFor="let data of deps" [value]="data.departmentName">{{ data.departmentName }}
-                    </option>
-                  </select>
-                  <label for="department">Select Department :</label>
-
-                </div>
+                  <div class="form-floating col-lg-3 col-md-11 col-11 mb-3 mb-lg-0">
+                    <input type="date" formControlName="toDate" class="form-control">
+                    <label for="department">To Date</label>
+                  </div>
 
 
                 <div class="text-center col-lg-3 col-md-11 col-11 mt-xl-3">
-                  <button type="button" class="col-3 col-lg-10 col-xl-5 btn  btn-info btn" style="text-align: center;">
+                  <button type="button" class="col-3 col-lg-10 col-xl-5 btn  btn-info btn" style="text-align: center;" (click)="AllCustListByBranch()">
                     Submit</button>
                   <button type="reset" class="col-3 col-lg-10 col-xl-5 btn btn-info btn mt-lg-1"
                     style="text-align: center;">
