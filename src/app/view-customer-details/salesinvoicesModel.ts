@@ -4,5 +4,5 @@ export class SalesInvoicesModel{
     accountNo: any;
     description: any;
     salesinvoice: any;
-    
+    fromdate :any ;
 }

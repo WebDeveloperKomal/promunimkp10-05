@@ -1,5 +1,5 @@
 export class authsignIdModel{
-
+// id:any;
     date: any;
     serTaxPlan:any;
     gender: any;

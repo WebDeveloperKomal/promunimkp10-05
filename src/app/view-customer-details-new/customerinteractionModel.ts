@@ -7,7 +7,7 @@ export class CustInteractionModel{
     followupByWhom:any;
     date: any;
     desc : any;
-  
+    employeeId :any;
     nextDate: any;
     isVisited : any;
     followupId  : any;

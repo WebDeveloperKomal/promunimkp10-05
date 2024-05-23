@@ -6,7 +6,6 @@ export class billingmainModel {
     balanceAmt: any;
     status: any;
     itemId : any;
-    // invoiceId :  any ;
     type: any;
     prdSrvId: any;
     discription: any;
@@ -19,13 +18,16 @@ export class billingmainModel {
     assesmentYear: any;
     total: any;
 
-
     amount: any;
-    // discription: any;
     invoceId: any;
     paymentMode: any;
     insertBy: any;
     transactionDate: any;
     transactionId: any;
     paymentType: any;
+    paidAgainst :any;
+    productId : any;
+    insertTime : any;
+    insertByUser : any;
+    prdSrvDesc :any;
 }

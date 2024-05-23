@@ -758,8 +758,8 @@ export class ApiService {
   // }
 
   //Customer Interaction
-  getCustomerInteraction(accountno: any): any { //running
-    return this.http.get(`${this.baseUrl}/get-followup/` + accountno);
+  getCustomerInteraction(accountNo: any): any { //running
+    return this.http.get(`${this.baseUrl}/get-followup/` + accountNo);
   }
   addCustInteraction(custinteraction: any): any {
     return this.http.post(`${this.baseUrl}/save-followup`, custinteraction);
@@ -782,6 +782,11 @@ export class ApiService {
   // }
 
   // billing
+
+  getInvoice(accountNumber: any): any { //running
+    return this.http.get(`${this.baseUrl}/getInvoices/` + accountNumber);
+  }
+
   getbillingmain(invoiceId: any): any { //running
     return this.http.get(`${this.baseUrl}/get-invoice-details/` + invoiceId);
   }

@@ -35,7 +35,8 @@ allCust=[{
     this.complianceForm = this.formBuilder.group({
       accountNo: ['', Validators.required], // Add validation if needed
       subject: ['', Validators.required], // Add validation if needed
-      description: ['', Validators.required] // Add validation if needed
+      reply: ['', Validators.required] // Add validation if needed
+      
     });
     
   }
@@ -54,11 +55,10 @@ allCust=[{
   }
 
   onSubmit(){ 
-
     console.log('replay send::::: ',this.addComplaints.accountNo);
     this.apiService.addComplaints(this.addComplaints).subscribe(
       (response:any)=>{
-        console.log(response);
+        console.log("Complaints!!!!!!!!!!!!!!",response);
         Swal.fire({
           title: "Record Updated!",
           icon: "success"

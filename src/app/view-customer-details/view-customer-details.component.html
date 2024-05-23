@@ -448,13 +448,18 @@
                                                         <tr>
                                                             <td style="padding-left: 15%;">Account Writing
                                                             </td>
-                                                            <td ng-if="acc.serAccWrite == true"><a href="#tab4"
-                                                                    onclick="changeTab('tab4')">View</a>
+                                                            <td ng-if="acc.serAccWrite == true"><a
+                                                                    (click)="openTab('tab4')">View</a>
                                                             </td>
+
+                                                            <!-- <td style="padding-left: 15%;">Account Writing</td>
+                                                            <td *ngIf="acc.serAccWrite"><a
+                                                                    >View</a></td> -->
+
                                                         </tr>
                                                         <tr class="altrow">
                                                             <td style="padding-left: 15%;">Tax Planning</td>
-                                                            <td><a href="" ng-click="openTaxPlanning()">View</a>
+                                                            <td><a (click)="openTab('tab4')">View</a>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -475,8 +480,8 @@
                                                         <tr>
                                                             <td style="padding-left: 15%;">Financial
                                                                 Planning</td>
-                                                            <td ng-if="acc.serFinanPlan == true"><a href=""
-                                                                    ng-click="openOccupIncome()">View</a>
+                                                            <td ng-if="acc.serFinanPlan == true"><a
+                                                                    (click)="openTab('tab4')">View</a>
                                                             </td>
                                                         </tr>
                                                         <br>
@@ -533,7 +538,7 @@
                                                 <div class="form-floating ml-2  mb-2">
                                                     <input type="text" formControlName="applicantName" placeholder=""
                                                         class="form-control" id="complianceName"
-                                                        value={{ProfileList.org_ind_details_id}}>
+                                                        value={{ProfileList.name}}>
                                                     <label for="companyname"
                                                         class="col-lg-2 col-4   col-form-label mr-5">Organization/Individual
                                                         Name: *</label>
@@ -542,8 +547,7 @@
 
                                             <div class="col-md-6 col-lg-6 col-xl-6 col-12">
                                                 <div class="form-floating  mb-2">
-                                                    <input type="date"
-                                                        formControlName="daincorporationRegistrationDobte"
+                                                    <input type="date" formControlName="incorporationRegistrationDob"
                                                         class="form-control" id="complianceName" placeholder=""
                                                         value={{ProfileList.date}}>
                                                     <label for="fullname"
@@ -927,14 +931,12 @@
                                                                 <button class="btn-info btn btn  m-lg-4 m-4 w-25"
                                                                     style="height: 36px; width:163; font-size:10px; border-radius: 80px;"
                                                                     (click)="onsubmit4()" type="submit">
-
                                                                     Submit
                                                                 </button>
 
                                                                 <button class="btn-info btn btn m-lg-4 m-4 w-25"
                                                                     data-bs-dismiss="modal"
                                                                     style="height: 36px; width:163; font-size:10px; border-radius: 80px;">
-
                                                                     Close
                                                                 </button>
                                                             </div>
@@ -986,7 +988,7 @@
 
                                                                                     <form [formGroup]="addbankstatement"
                                                                                         class=" col-md-12 col-sm-12 col-xs-12 ">
-                                                                                          <!-- -->
+                                                                                        <!-- -->
                                                                                         <div class="container"
                                                                                             style="padding-left:10%">
 
@@ -1276,9 +1278,9 @@
 
                                                                                             <button
                                                                                                 class="btn-info btn btn m-lg-4 m-4 w-25"
+                                                                                                data-bs-dismiss="modal"
                                                                                                 style="height: 36px; width:163; font-size:10px; border-radius: 80px;">
-                                                                                                <i
-                                                                                                    class="ace-icon fa fa-undo bigger-110"></i>
+                                                                                                <!-- <i class="ace-icon fa fa-undo bigger-110"></i> -->
                                                                                                 Close
                                                                                             </button>
                                                                                         </div>
@@ -1861,7 +1863,7 @@
                                                             </div>
                                                             <div class="modal-body">
 
-                                                                <form [formGroup]="addbankstatement"
+                                                                <form [formGroup]="addbankstatement1"
                                                                     class=" col-md-12 col-sm-12 col-xs-12">
                                                                     <!-- -->
                                                                     <div class="container" style="padding-left: 10%;">
@@ -1872,7 +1874,7 @@
                                                                             <div
                                                                                 class="form-floating col-lg-10 col-md-10 col-10 mb-1 ">
                                                                                 <input type="date" style="width:360px"
-                                                                                    formControlName="fromDate"
+                                                                                    formControlName="fromdate"
                                                                                     class="form-control">
                                                                                 <label
                                                                                     class="col-lg-4 col-4 control-label"
@@ -1915,8 +1917,6 @@
 
 
                                                                         <div class="form-group row mb-1">
-
-
                                                                             <div
                                                                                 class="form-floating col-lg-10 col-md-10 col-10 mb-1">
 
@@ -1924,7 +1924,6 @@
                                                                                     formControlName="description"
                                                                                     placeholder=""
                                                                                     class="form-control"></textarea>
-
                                                                                 <label
                                                                                     class="col-lg-4 col-4 control-label"
                                                                                     id="Dis">
@@ -1968,14 +1967,14 @@
                                                             </div>
                                                             <div class="modal-body">
 
-                                                                <form [formGroup]="addbankstatement"
+                                                                <form [formGroup]="addbankstatement1"
                                                                     class=" col-md-12 col-sm-12 col-xs-12">
                                                                     <div class="container" style="padding-left: 10%;">
                                                                         <div class="form-group row mb-1">
                                                                             <div
                                                                                 class="form-floating col-lg-10 col-md-10 col-10 mb-1 ">
                                                                                 <input type="date" style="width:360px"
-                                                                                    formControlName="fromDate"
+                                                                                    formControlName="fromdate"
                                                                                     placeholder="" class="form-control">
                                                                                 <label
                                                                                     class="col-lg-4 col-4 control-label"
@@ -2239,10 +2238,12 @@
                                                                                     class="form-select">
                                                                                     <option value="">Select Tax
                                                                                         Type</option>
-                                                                                    <option value="{{tax.taxTypeName}}"
-                                                                                        *ngFor="let tax of TaxTypeList">
+                                                                                    <option
+                                                                                        *ngFor="let tax of TaxTypeList"
+                                                                                        value="{{tax.taxTypeName}}">
                                                                                         {{tax.taxTypeName}}
                                                                                     </option>
+
 
                                                                                 </select>
                                                                                 <label
@@ -2270,7 +2271,7 @@
                                                                             <div
                                                                                 class="form-floating col-lg-10 col-md-10 col-10 mb-1">
                                                                                 <input type="date" style="width:360px"
-                                                                                    formControlName="fromDate"
+                                                                                    formControlName="fromdate"
                                                                                     class="form-control">
                                                                                 <label
                                                                                     class="col-lg-4 col-4 control-label"
@@ -2554,7 +2555,6 @@
                                                                 <button class="btn-info btn btn  m-lg-4 m-4 w-25"
                                                                     style="height: 36px; width:163; font-size:10px; border-radius: 80px;"
                                                                     (click)="addVehicle()" type="submit">
-
                                                                     Submit
                                                                 </button>
 
@@ -3459,7 +3459,7 @@
                                                             Taxes
                                                         </button>
                                                     </div>
-                                                </div> 
+                                                </div>
 
                                                 <tbody>
 
@@ -30620,8 +30620,7 @@
                                                                                 <select class="form-select"
                                                                                     style="width:360px"
                                                                                     formControlName="taxName">
-                                                                                    <option
-                                                                                        value="Health Insurance">
+                                                                                    <option value="Health Insurance">
                                                                                         Health Insurance
                                                                                     </option>
                                                                                 </select>
@@ -33872,11 +33871,11 @@
                                                         Submit
                                                     </button>
 
-                                                    <button class="btn-info btn btn m-lg-4 m-4 w-25"
+                                                    <!-- <button  class="btn-info btn btn m-lg-4 m-4 w-25"
                                                         style="height: 36px; width: 163px; font-size:10px; border-radius: 2rem;">
 
                                                         Cancal
-                                                    </button>
+                                                    </button> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -33890,7 +33889,7 @@
 
                                                 <div class="col-12 offset-sm-8 offset-md-8">
                                                     <h6 style="color:#004C8C; font-size:10px; margin-top: 2%;">
-                                                        Authorised Signatory Details-1</h6>
+                                                        Authorised Signatory Details</h6>
                                                 </div>
                                                 <tbody>
                                                     <!-- style="padding-left: 200px;" -->
@@ -34030,7 +34029,7 @@
                                             <div class="text-center align-middle" style="margin-top: -20px">
                                                 <button class="btn-info btn btn  m-lg-4 m-4 w-25"
                                                     style="height: 36px; width:163; font-size:10px; border-radius: 80px;"
-                                                    data-bs-toggle="modal" data-bs-target="#exampleModal7">
+                                                    data-bs-toggle="modal" data-bs-target="#exampleModal7" (click)="Edit(data)">
                                                     Edit
                                                 </button>
 
@@ -34080,15 +34079,12 @@
                                                     <td>{{data.status}}</td>
                                                     <td>{{data.nextDate}}</td>
                                                     <td>{{data.desc}}</td>
-                                                    <td> </td>
-                                                    <!-- <td>{{data.discription}}</td>  -->
-                                                    <!-- <td>{{data.}}</td>  -->
-                                                    <!-- <td>{{customerinteractiondetails}}</td>          -->
-                                                    <td>{{data.followupByWhom}}</td>
+                                                    <td>{{data.followupByWhom}} </td>
+                                                    <td>{{data.employeeId}}</td>
                                                     <td> <button class="btn btn-xs" style="font-size: 13px;"
                                                             (click)="customerinteraction2(data.followupId)">
                                                             <i class="fa-solid fa-pen-to-square fa-lg"
-                                                                style=" color: #3BB161;"></i>
+                                                                style="color: #3BB161;"></i>
                                                         </button>&nbsp;&nbsp;
                                                         <button class="btn btn-xs" style=" font-size: 13px;"
                                                             (click)="deletecustInteraction(data.followupId)">
@@ -34243,7 +34239,7 @@
                                                         Submit
                                                     </button>
 
-                                                    <button class="btn-info btn btn m-lg-4 m-4 w-25"
+                                                    <button type="reset" class="btn-info btn btn m-lg-4 m-4 w-25"
                                                         style="height: 36px; width: 365px; font-size:10px; border-radius: 2rem;">
 
                                                         Cancal
@@ -34277,7 +34273,7 @@
 
                                             <button type="button" class="btn btn-info btn btn" style="float: right; width:244px;
                                                     height:30px; font-size:10px; border-radius: 20px;"
-                                                (click)="customerinteraction3()">View Customer
+                                                (click)="customerinteraction1()">View Customer
                                                 Interaction</button>
 
                                             <div class="page-header">
@@ -34435,12 +34431,14 @@
                                 <div class="tab-pane active" [class.active]="activeTab === 'tab7'" id="tab7">
                                     <div *ngIf="showdata2" class="table-responsive"
                                         style="border-radius: 5px; padding: 10px;">
+
                                         <div>
                                             <button type="button" class="btn btn-info btn btn mb-2"
                                                 (click)="AddInvoice()"
                                                 style="float: right; width:244px; height:30px; font-size:10px; border-radius: 20px;">Add
                                                 Invoice</button>
                                         </div>
+
                                         <table id="roles_dataTable" class="table rounded-table">
                                             <thead>
                                                 <tr>
@@ -34465,36 +34463,29 @@
                                                         <td>{{data.invoiceId}}</td>
                                                         <td>{{data.invoiceId}}</td>
                                                         <td>{{data.invoiceId}}</td> -->
-                                                <tr>
-                                                    <td>{{billingmaindetails.invoiceId}}</td>
-                                                    <td>{{billingmaindetails.invoiceDate}}</td>
-                                                    <td>{{billingmaindetails.dueDate}}</td>
-                                                    <td></td>
-                                                    <td>{{billingmaindetails.totalAmt}}</td>
-                                                    <td>{{billingmaindetails.balanceAmt}}</td>
-                                                    <td>{{billingmaindetails.status}}</td>
+                                                <tr *ngFor="let invoice of invoiceList">
+                                                    <td>{{invoice.invoiceId}}</td>
+                                                    <td>{{invoice.invoiceDate}}</td>
+                                                    <td>{{invoice.dueDate}}</td>
+                                                    <td>{{invoice.paidDate}}</td>
+                                                    <td>{{invoice.total}}</td>
+                                                    <td>{{invoice.balance}}</td>
+                                                    <td>{{invoice.status}}</td>
 
                                                     <td>
                                                         <button class="btn m-2"
                                                             style="width: 82px; height:20px;  font-size:10px; background-color:#004C8C!important; border-radius: 20px; color: white;"
-                                                            (click)="view()">
+                                                            (click)="view(invoice.invoiceId)">
                                                             view
                                                         </button><br>
 
-                                                        <button class="btn m-2"
+                                                        <!-- <div>{{invoice.status}}</div> -->
+                                                        <!-- Add this line to debug status value -->
+                                                        <button *ngIf="!isInvoicePaid(invoice.status)" class="btn m-2"
                                                             style="width: 82px; height:20px; font-size:9px; top: -10px; background-color:#004C8C!important; border-radius: 20px; color: white;"
-                                                            (click)="AddInvoice2()">
+                                                            (click)="payNow(invoice.invoiceId)">
                                                             Pay Now
                                                         </button>
-                                                        <!-- <button class="btn btn-xs"
-                                                                style="font-size: 13px; background-color:#004C8C!important; color: white;">
-                                                                view
-                                                            </button>
-                                                            <button class="btn btn-xs"
-                                                                style="font-size: 13px; background-color:#004C8C!important; color: white;">
-                                                                Pay Now
-                                                            </button> -->
-
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -34569,15 +34560,14 @@
                                                     <button class="btn-info btn btn col-md-6 col-lg-6   m-lg-4 m-4 w-25"
                                                         style="font-size: 10px; width:365px; height: 36px; border-radius: 2rem;"
                                                         (click)="savebillinginvoice()" type="submit">
-
                                                         Create Invoice
                                                     </button>
 
-                                                    <button class="btn-info btn btn m-lg-4 m-4 w-25"
+                                                    <!-- <button class="btn-info btn btn m-lg-4 m-4 w-25"
                                                         style="font-size: 10px; width:365px; height: 36px; border-radius: 2rem;">
 
                                                         Cancal
-                                                    </button>
+                                                    </button> -->
                                                 </div>
 
                                                 <!-- <div class=" col-md-12 col-sm-12 col-xs-12 mt-5 text-end">
@@ -34593,6 +34583,184 @@
 
                                         </div>
                                     </div>
+
+                                    <div *ngIf="AddInvoiceItems"
+                                        style="background-color: #ffffff;  border-radius: 5px; padding: 20px 80px; margin-top: 10px;">
+                                        <button type="button" class="btn btn-info btn btn"
+                                            style="float: right; border-radius: 20px; font-size: 10px; width:176px; height: 30px;"
+                                            (click)="AddInvoice4()">
+                                            View Invoices</button>
+
+                                        <div class="page-header">
+                                            <h6 style="color: #004C8C; font-size:10px;">
+                                                Add Invoice Items
+                                            </h6>
+                                        </div>
+
+                                        <form class="col-md-12 col-sm-12 col-xs-12 mt-4" *ngIf="showadd"
+                                            [formGroup]="SaveinvoiceIDForm">
+                                            <!-- [formGroup]="employeeForm1" -->
+                                            <div class="form-group row">
+
+                                                <div class="col-md-6 col-lg-6 col-xl-6 col-12">
+
+                                                    <div class="form-floating ml-2  mb-2">
+                                                        <input type="text" formControlName="invoiceId" placeholder=""
+                                                            class="form-control" id="complianceName" readonly>
+                                                        <label for="email"
+                                                            class="col-lg-2 col-4   col-form-label mr-5">Invoice
+                                                            Id:</label>
+                                                    </div>
+
+                                                    <div class="form-floating ml-2 mb-2"
+                                                        *ngIf="SaveinvoiceIDForm.get('type')?.value === '0'">
+                                                        <select formControlName="prdSrvId" class="form-control"
+                                                            id="productSelect" required>
+                                                            <option value="" selected>Select Product</option>
+                                                            <option *ngFor="let data of productList1"
+                                                                [value]="data.productId">{{data.productName}} /
+                                                                {{data.minValue}} -
+                                                                {{data.maxValue}}</option>
+                                                        </select>
+                                                        <label for="productSelect"
+                                                            class="col-lg-2 col-4 col-form-label mr-5 mb-2">Product:</label>
+                                                    </div>
+
+                                                    <div class="form-floating ml-2 mb-2"
+                                                        *ngIf="SaveinvoiceIDForm.get('type')?.value === '1'">
+                                                        <select formControlName="prdSrvId" class="form-control"
+                                                            id="serviceSelect" required>
+                                                            <option value="" selected>Select Service</option>
+                                                            <option value="1">Other Services</option>
+                                                            <option value="2">GST Registration</option>
+                                                            <option value="3">Professional Tax Registration -
+                                                                Individual</option>
+                                                            <option value="4">Professional Tax Registration -
+                                                                Non Individual</option>
+                                                            <option value="5">Income Tax Audit</option>
+                                                            <option value="6">GST Audit</option>
+                                                            <option value="7">VAT Audit</option>
+                                                            <option value="8">Service Tax Audit</option>
+                                                            <option value="9">C Form</option>
+                                                            <!-- <option *ngFor="let service of serviceList" [value]="service.serviceId">{{service.serviceName}}</option> -->
+                                                        </select>
+                                                        <label for="serviceSelect"
+                                                            class="col-lg-2 col-4 col-form-label mr-5 mb-2">Service:</label>
+                                                    </div>
+
+                                                    <div class="form-floating ml-2 mb-2">
+                                                        <input type="text" formControlName="itemFees" placeholder=""
+                                                            class="form-control" (input)="onInputChange1()">
+                                                        <label for="itemFees"
+                                                            class="col-lg-2 col-4 col-form-label mr-5 mb-2">Product
+                                                            Fees:</label>
+                                                    </div>
+
+
+
+                                                </div>
+
+                                                <div class="col-md-6 col-lg-6 col-xl-6 col-12">
+
+                                                    <div class="form-floating mb-2">
+                                                        <select class="form-select" formControlName="type"
+                                                            (change)="onIDTypeChange()">
+                                                            <option value="" selected>Select</option>
+                                                            <!-- Default neutral option -->
+                                                            <option value="0">Product</option>
+                                                            <option value="1">Service</option>
+                                                        </select>
+                                                        <label for="type"
+                                                            class="col-lg-2 col-4 col-form-label mr-5">Item Type</label>
+                                                    </div>
+
+
+                                                    <div class="form-floating  mb-2">
+                                                        <input type="text" formControlName="discription" placeholder=""
+                                                            class="form-control" id="complianceName">
+                                                        <label for="email"
+                                                            class="col-lg-2 col-4   col-form-label mr-5">Description</label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row mb-sm-2">
+                                                <div
+                                                    class="form-floating col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-sm-2 col-8">
+                                                    <select class="form-select" formControlName="discountRate"
+                                                        (change)="onInputChange1()">
+                                                        <option value="0">0</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                    </select>
+                                                    <label for="discountRate"
+                                                        class="col-lg-2 col-sm-1 col-md-2 col-4 col-form-label mr-5"
+                                                        id="Dis">Discount Rate(%):</label>
+                                                </div>
+                                                <div class="form-floating col-lg-3 col-md-6 col-sm-6 mb-sm-2 col-8">
+                                                    <input type="text" formControlName="discountAmount"
+                                                        class="form-control" id="discountAmount" readonly>
+                                                </div>
+
+                                                <div
+                                                    class="form-floating col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-sm-2 col-8">
+                                                    <input type="text" formControlName="taxRate" class="form-control"
+                                                        (input)="onInputChange1()">
+                                                    <label for="taxRate" class="col-lg-2 col-4 col-form-label mr-5"
+                                                        id="Dis">Tax Rate(%):</label>
+                                                </div>
+                                                <div class="form-floating col-lg-3 col-md-6 col-sm-6 mb-sm-2 col-8">
+                                                    <input type="text" formControlName="taxAmount" class="form-control"
+                                                        id="taxAmount" readonly>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group row">
+                                                <div class="form-floating col-lg-6 col-md-6 col-sm-6 col-8">
+                                                    <input type="text" formControlName="itemTotal" placeholder=""
+                                                        class="form-control" id="itemTotal" readonly>
+                                                    <label for="itemTotal" class="col-lg-2 col-4 col-form-label mr-5"
+                                                        id="Dis">Total:</label>
+                                                </div>
+
+
+                                                <div class="form-floating col-lg-6 col-md-6 col-sm-6 col-8">
+                                                    <select class="form-select" formControlName="assesmentYear">
+                                                        <option value="2021">2021</option>
+                                                        <option value="2022">2022 </option>
+                                                        <option value="2023">2023</option>
+                                                        <option value="2024">2024</option>
+                                                        <option value="2025">2025</option>
+                                                    </select>
+                                                    <label for="email" class="col-lg-2 col-4   col-form-label mr-5 mb-2"
+                                                        id="Dis">Financial
+                                                        Year::</label>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="text-center align-middle">
+                                                <button class="btn-info btn btn  m-lg-4 m-4 w-25"
+                                                    style="height: 36px; width: 365px; border-radius: 80px;"
+                                                    (click)="saveinvoiceID()" type="submit">
+
+                                                    Save
+                                                </button>
+
+                                                <!-- <button class="btn-info btn btn m-lg-4 m-4 w-25"style="height: 36px; width:163; font-size:10px; border-radius: 80px;">
+                                                
+                                                Cancal
+                                            </button> -->
+                                            </div>
+                                        </form>
+                                    </div>
+
+
+                                    <!-- **************** Payment  ********************* -->
 
                                     <div *ngIf="showdata4"
                                         style="background-color: #ffffff;  border-radius: 5px; padding: 20px 80px;">
@@ -34658,8 +34826,8 @@
                                                         <div class="form-floating ml-2  mb-2">
                                                             <select class="form-select" formControlName="paidAgainst">
                                                                 <option value="">Select</option>
-                                                                <option value="0">Product</option>
-                                                                <option value="1">Service</option>
+                                                                <option value="Product">Product</option>
+                                                                <option value="Service">Service</option>
                                                             </select>
                                                             <label for="email"
                                                                 class="col-lg-2 col-4   col-form-label mr-5">Payment
@@ -34717,7 +34885,6 @@
                                                     <button class="btn-info btn btn  m-lg-4 m-4 w-25"
                                                         style="height: 36px; width:365px; font-size:10px; border-radius: 2rem;"
                                                         (click)="savepayment()" type="submit">
-
                                                         Save
                                                     </button>
 
@@ -34742,6 +34909,7 @@
                                         </div>
                                     </div>
 
+                                    <!-- ****************   Update Payment ********************* -->
 
                                     <div *ngIf="showdata6"
                                         style="background-color: #ffffff;  border-radius: 5px; padding: 20px 80px; margin-top: 10px;">
@@ -34805,8 +34973,8 @@
                                                         <div class="form-floating ml-2  mb-2">
                                                             <select class="form-select" formControlName="paidAgainst">
                                                                 <option value="">Select</option>
-                                                                <option value="3">Product</option>
-                                                                <option value="1">Service</option>
+                                                                <option value="Product">Product</option>
+                                                                <option value="Service">Service</option>
 
                                                             </select>
                                                             <label for="email"
@@ -34849,9 +35017,7 @@
 
                                                         <div class="form-floating  mb-2">
                                                             <textarea class="form-control" placeholder=""
-                                                                formControlName="discription">
-
-                                                                            </textarea>
+                                                                formControlName="discription"></textarea>
                                                             <label for="contactno"
                                                                 class="col-lg-2 col-4   col-form-label mr-5">Transaction
                                                                 Description:</label>
@@ -34864,7 +35030,6 @@
                                                     <button class="btn-info btn btn  m-lg-4  w-25"
                                                         style="height: 36px; width:365px; margin-top: -30px; border-radius: 2rem;"
                                                         (click)="updatepayment()" type="submit">
-
                                                         Update
                                                     </button>
 
@@ -34888,6 +35053,8 @@
 
                                         </div>
                                     </div>
+
+                                  <!-- ****************   Add Invoice Items  **************** -->
 
                                     <div *ngIf="showdata5" Add Invoice Items>
                                         <div id="branch_datatable_wrapper" class="dataTables_wrapper no-footer">
@@ -34917,31 +35084,60 @@
                                                                     id="complianceName" readonly>
                                                                 <label for="email"
                                                                     class="col-lg-2 col-4   col-form-label mr-5">Invoice
-                                                                    Id.:</label>
+                                                                    Id:</label>
                                                             </div>
 
-                                                            <div class="form-floating ml-2  mb-2">
-                                                                <select formControlName="prdSrvId"
-                                                                    class="form-control select ng-pristine ng-untouched ng-invalid ng-invalid-required"
-                                                                    id="productSelect" name="productSelect" required="">
-                                                                    <option value="" selected="">Select Product
+                                                            <div class="form-floating ml-2 mb-2"
+                                                                *ngIf="itemType.value === '0'">
+                                                                <select formControlName="prdSrvId" class="form-control"
+                                                                    id="productSelect" required>
+                                                                    <option value="" selected>Select Product</option>
+                                                                    <option *ngFor="let data of productList1"
+                                                                        [value]="data.productId">{{data.productName}} /
+                                                                        {{data.minValue}} -
+                                                                        {{data.maxValue}}
                                                                     </option>
-                                                                    <option ng-repeat="item in productData"
-                                                                        *ngFor="let data of productList1"
-                                                                        [value]="data.productId"
-                                                                        class="ng-binding ng-scope">
-                                                                        {{data.productName}}</option>
                                                                 </select>
-                                                                <label for="email"
-                                                                    class="col-lg-2 col-4   col-form-label mr-5 mb-2">Product:</label>
+                                                                <label for="productSelect"
+                                                                    class="col-lg-2 col-4 col-form-label mr-5 mb-2">Product:</label>
                                                             </div>
 
-                                                            <div class="form-floating ml-2  mb-2">
+
+
+                                                            <div class="form-floating ml-2 mb-2"
+                                                                *ngIf="itemType.value === '1'">
+                                                                <select formControlName="prdSrvId" class="form-control"
+                                                                    id="serviceSelect" required>
+                                                                    <option value="" selected>Select Service</option>
+                                                                    <!-- //<option *ngFor="let service of serviceList"
+                                                                        [value]="service.serviceId">
+                                                                        {{service.serviceName}}</option> -->
+                                                                    <option value="1">Other Services</option>
+                                                                    <option value="2">GST Registration</option>
+                                                                    <option value="3">Professional Tax Registration -
+                                                                        Individual</option>
+                                                                    <option value="4">Professional Tax Registration -
+                                                                        Non Individual</option>
+                                                                    <option value="5">Income Tax Audit</option>
+                                                                    <option value="6">GST Audit</option>
+                                                                    <option value="7">VAT Audit</option>
+                                                                    <option value="8">Service Tax Audit</option>
+                                                                    <option value="9">C Form</option>
+                                                                </select>
+                                                                <label for="serviceSelect"
+                                                                    class="col-lg-2 col-4 col-form-label mr-5 mb-2">Service:</label>
+                                                            </div>
+
+                                                            <!-- <div class="form-floating ml-2 mb-2">
+                                                                <input type="text" formControlName="itemFees" placeholder="" class="form-control" (input)="calculateDiscount()">
+                                                                <label for="itemFees" class="col-lg-2 col-4 col-form-label mr-5 mb-2">Product Fees:</label>
+                                                            </div> -->
+                                                            <div class="form-floating ml-2 mb-2">
                                                                 <input type="text" formControlName="itemFees"
                                                                     placeholder="" class="form-control"
-                                                                    id="complianceName">
-                                                                <label for="contactno"
-                                                                    class="col-lg-2 col-4   col-form-label mr-5 mb-2">Product
+                                                                    (input)="onInputChange()">
+                                                                <label for="itemFees"
+                                                                    class="col-lg-2 col-4 col-form-label mr-5 mb-2">Product
                                                                     Fees:</label>
                                                             </div>
 
@@ -34950,14 +35146,15 @@
 
                                                         <div class="col-md-6 col-lg-6 col-xl-6 col-12">
 
-                                                            <div class="form-floating  mb-2">
-                                                                <select class="form-select" formControlName="type">
+                                                            <div class="form-floating mb-2">
+                                                                <select class="form-select" formControlName="type"
+                                                                    (change)="onItemTypeChange()">
                                                                     <option value="">Select</option>
-                                                                    <option value="0">Product </option>
+                                                                    <option value="0">Product</option>
                                                                     <option value="1">Service</option>
                                                                 </select>
-                                                                <label for="email"
-                                                                    class="col-lg-2 col-4   col-form-label mr-5">Item
+                                                                <label for="type"
+                                                                    class="col-lg-2 col-4 col-form-label mr-5">Item
                                                                     Type</label>
                                                             </div>
 
@@ -34973,40 +35170,40 @@
                                                     </div>
 
                                                     <div class="form-group row  mb-sm-2">
+
                                                         <div
                                                             class="form-floating col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-sm-2 col-8">
-                                                            <select class="form-select" formControlName="discountRate">
-                                                                <option value="5655">0</option>
-                                                                <option value="1545">1 </option>
-                                                                <option value="2454">2</option>
-                                                                <option value="3454">3</option>
-                                                                <option value="4345">4</option>
+                                                            <select class="form-select" formControlName="discountRate"
+                                                                (change)="onInputChange()">
+                                                                <option value="0">0</option>
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
                                                             </select>
-                                                            <label for="email"
-                                                                class="col-lg-2  col-sm-1 col-md-2 col-4 col-form-label mr-5"
-                                                                id="Dis">Discount
-                                                                Rate(%):</label>
+                                                            <label for="discountRate"
+                                                                class="col-lg-2 col-sm-1 col-md-2 col-4 col-form-label mr-5"
+                                                                id="Dis">Discount Rate(%):</label>
                                                         </div>
                                                         <div
                                                             class="form-floating col-lg-3 col-md-6 col-sm-6 mb-sm-2 col-8">
                                                             <input type="text" formControlName="discountAmount"
-                                                                class="form-control" id="complianceName">
+                                                                class="form-control" id="discountAmount" readonly>
                                                         </div>
 
 
                                                         <div
-                                                            class="form-floating col-lg-3 col-md-6 col-sm-6 mb-sm-2 col-8">
+                                                            class="form-floating col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-sm-2 col-8">
                                                             <input type="text" formControlName="taxRate"
-                                                                class="form-control" id="complianceName">
-                                                            <label for="contactno"
-                                                                class="col-lg-2 col-4   col-form-label mr-5"
-                                                                id="Dis">Tax
+                                                                class="form-control" (input)="onInputChange()">
+                                                            <label for="taxRate"
+                                                                class="col-lg-2 col-4 col-form-label mr-5" id="Dis">Tax
                                                                 Rate(%):</label>
                                                         </div>
                                                         <div
-                                                            class="form-floating col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-sm-2 col-8">
+                                                            class="form-floating col-lg-3 col-md-6 col-sm-6 mb-sm-2 col-8">
                                                             <input type="text" formControlName="taxAmount"
-                                                                class="form-control" id="complianceName">
+                                                                class="form-control" id="taxAmount" readonly>
                                                         </div>
                                                     </div>
 
@@ -35014,11 +35211,11 @@
                                                     <div class="form-group row">
                                                         <div class="form-floating col-lg-6 col-md-6 col-sm-6 col-8">
                                                             <input type="text" formControlName="itemTotal"
-                                                                placeholder="" class="form-control" id="complianceName">
-                                                            <label for="contactno"
-                                                                class="col-lg-2 col-4   col-form-label mr-5"
+                                                                placeholder="" class="form-control" id="itemTotal"
+                                                                readonly>
+                                                            <label for="itemTotal"
+                                                                class="col-lg-2 col-4 col-form-label mr-5"
                                                                 id="Dis">Total:</label>
-
                                                         </div>
 
 
@@ -35042,154 +35239,186 @@
                                                         <button class="btn-info btn btn  m-lg-4 m-4 w-25"
                                                             style="height: 36px; width: 365px; border-radius: 80px;"
                                                             (click)="saveinvoiceitem()" type="submit">
-
                                                             Save
                                                         </button>
+                                                    </div>
+                                                </form>
 
-                                                        <!-- <button class="btn-info btn btn m-lg-4 m-4 w-25"style="height: 36px; width:163; font-size:10px; border-radius: 80px;">
+                                 <!-- *********** Update invoice item Form ************ -->
+
+                                                <form class="col-md-12 col-sm-12 col-xs-12 mt-4" *ngIf="showupdate"
+                                                    [formGroup]="UpdateinvoiceitemForm">
+                                                    
+                                                    <!-- [formGroup]="employeeForm1" -->
+                                                    <div class="form-group row">
+
+                                                        <div class="col-md-6 col-lg-6 col-xl-6 col-12">
+
+                                                            <div class="form-floating ml-2  mb-2">
+                                                                <input type="text" formControlName="invoiceId"
+                                                                    placeholder="" class="form-control"
+                                                                    id="invoiceId" readonly>
+                                                                <label for="invoiceId"
+                                                                    class="col-lg-2 col-4   col-form-label mr-5">Invoice
+                                                                    Id:</label>
+                                                            </div>
+
+                                                            <div class="form-floating ml-2 mb-2" *ngIf="updateType.value === '0'">
+                                                                <select formControlName="prdSrvDesc" class="form-control" id="productSelect" required>
+                                                                    <option value="" selected>Select Product</option>
+                                                                    <option *ngFor="let product of productList1" [value]="product.productId">
+                                                                        {{product.productName}} / {{product.minValue}} - {{product.maxValue}}
+                                                                    </option>
+                                                                </select>
+                                                                <label for="productSelect" class="col-lg-2 col-4 col-form-label mr-5 mb-2">Product:</label>
                                                             
-                                                            Cancal
-                                                        </button> -->
+                                                            </div>
+                                                            
+
+
+
+                                                            <div class="form-floating ml-2 mb-2"
+                                                                *ngIf="updateType.value === '1'">
+                                                                <select formControlName="prdSrvId" class="form-control"
+                                                                    id="serviceSelect" required>
+                                                                    <option value="" selected>Select Service</option>
+                                                                    <!-- //<option *ngFor="let service of serviceList"
+                                                                    [value]="service.serviceId">
+                                                                    {{service.serviceName}}</option> -->
+                                                                    <option value="1">Other Services</option>
+                                                                    <option value="2">GST Registration</option>
+                                                                    <option value="3">Professional Tax Registration -
+                                                                        Individual</option>
+                                                                    <option value="4">Professional Tax Registration -
+                                                                        Non Individual</option>
+                                                                    <option value="5">Income Tax Audit</option>
+                                                                    <option value="6">GST Audit</option>
+                                                                    <option value="7">VAT Audit</option>
+                                                                    <option value="8">Service Tax Audit</option>
+                                                                    <option value="9">C Form</option>
+                                                                </select>
+                                                                <label for="serviceSelect"
+                                                                    class="col-lg-2 col-4 col-form-label mr-5 mb-2">Service:</label>
+                                                            </div>
+
+                                                            <!-- <div class="form-floating ml-2 mb-2">
+                                                            <input type="text" formControlName="itemFees" placeholder="" class="form-control" (input)="calculateDiscount()">
+                                                            <label for="itemFees" class="col-lg-2 col-4 col-form-label mr-5 mb-2">Product Fees:</label>
+                                                        </div> -->
+                                                            <div class="form-floating ml-2 mb-2">
+                                                                <input type="text" formControlName="itemFees"
+                                                                    placeholder="" class="form-control"
+                                                                    (input)="onInputChange2()">
+                                                                <label for="itemFees"
+                                                                    class="col-lg-2 col-4 col-form-label mr-5 mb-2">Product
+                                                                    Fees:</label>
+                                                            </div>
+
+
+                                                        </div>
+
+                                                        <div class="col-md-6 col-lg-6 col-xl-6 col-12">
+
+                                                            <div class="form-floating mb-2">
+                                                                <select class="form-select" formControlName="type"
+                                                                    (change)="onUpdateTypeChange()">
+                                                                    <option value="">Select</option>
+                                                                    <option value="0">Product</option>
+                                                                    <option value="1">Service</option>
+                                                                </select>
+                                                                <label for="type"
+                                                                    class="col-lg-2 col-4 col-form-label mr-5">Item
+                                                                    Type</label>
+                                                            </div>
+
+                                                            <div class="form-floating  mb-2">
+                                                                <input type="text" formControlName="discription"
+                                                                    placeholder="" class="form-control"
+                                                                    id="complianceName">
+                                                                <label for="email"
+                                                                    class="col-lg-2 col-4   col-form-label mr-5">Description</label>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row  mb-sm-2">
+
+                                                        <div
+                                                            class="form-floating col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-sm-2 col-8">
+                                                            <select class="form-select" formControlName="discountRate"
+                                                                (change)="onInputChange2()">
+                                                                <option value="0">0</option>
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                            </select>
+                                                            <label for="discountRate"
+                                                                class="col-lg-2 col-sm-1 col-md-2 col-4 col-form-label mr-5"
+                                                                id="Dis">Discount Rate(%):</label>
+                                                        </div>
+                                                        <div
+                                                            class="form-floating col-lg-3 col-md-6 col-sm-6 mb-sm-2 col-8">
+                                                            <input type="text" formControlName="discountAmount"
+                                                                class="form-control" id="discountAmount" readonly>
+                                                        </div>
+
+
+                                                        <div
+                                                            class="form-floating col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-sm-2 col-8">
+                                                            <input type="text" formControlName="taxRate"
+                                                                class="form-control" (input)="onInputChange2()">
+                                                            <label for="taxRate"
+                                                                class="col-lg-2 col-4 col-form-label mr-5" id="Dis">Tax
+                                                                Rate(%):</label>
+                                                        </div>
+                                                        <div
+                                                            class="form-floating col-lg-3 col-md-6 col-sm-6 mb-sm-2 col-8">
+                                                            <input type="text" formControlName="taxAmount"
+                                                                class="form-control" id="taxAmount" readonly>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="form-group row">
+                                                        <div class="form-floating col-lg-6 col-md-6 col-sm-6 col-8">
+                                                            <input type="text" formControlName="itemTotal"
+                                                                placeholder="" class="form-control" id="itemTotal"
+                                                                readonly>
+                                                            <label for="itemTotal"
+                                                                class="col-lg-2 col-4 col-form-label mr-5"
+                                                                id="Dis">Total:</label>
+                                                        </div>
+
+
+                                                        <div class="form-floating col-lg-6 col-md-6 col-sm-6 col-8">
+                                                            <select class="form-select" formControlName="assesmentYear">
+                                                                <option value="2021">2021</option>
+                                                                <option value="2022">2022 </option>
+                                                                <option value="2023">2023</option>
+                                                                <option value="2024">2024</option>
+                                                                <option value="2025">2025</option>
+                                                            </select>
+                                                            <label for="email"
+                                                                class="col-lg-2 col-4   col-form-label mr-5 mb-2"
+                                                                id="Dis">Financial
+                                                                Year::</label>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="text-center align-middle">
+                                                        <button class="btn-info btn btn  m-lg-4 m-4 w-25"
+                                                            style="height: 36px; width: 365px; border-radius: 80px;"
+                                                            type="submit" (click)="UpdateInvoiceitemForm()">
+                                                            Update
+                                                        </button>
                                                     </div>
                                                 </form>
                                             </div>
 
 
-
-
-                                            <form class="col-md-12 col-sm-12 col-xs-12" *ngIf="showupdate"
-                                                [formGroup]="UpdateinvoiceitemForm">
-                                                <!-- [formGroup]="employeeForm1" -->
-                                                <div class="form-group row mb-3">
-                                                    <label for="email"
-                                                        class="col-lg-2 col-4   col-form-label mr-5 mb-2">Invoice
-                                                        Id.:</label>
-                                                    <div class="col-lg-4 col-8">
-                                                        <input type="text" formControlName="invoiceId"
-                                                            class="form-control" id="complianceName" readonly>
-                                                    </div>
-                                                    <!-- <label for="contactno" class="col-lg-2 col-4   col-form-label mr-5">Account No.:</label>
-                                                                 <div class="col-lg-4 col-8">
-                                                                     <input type="test" formControlName="branchcity"  class="form-control"
-                                                                         id="complianceName">
-                                                                 </div> -->
-                                                </div>
-                                                <div class="form-group row mb-3">
-                                                    <label for="email"
-                                                        class="col-lg-2 col-4   col-form-label mr-5 mb-2">Item
-                                                        Type</label>
-                                                    <!-- <div class="col-lg-4 col-8">
-                                                                    <input type="date" formControlName="branchcode"  class="form-control"
-                                                                        id="complianceName">
-                                                                </div> -->
-                                                    <div class="col-lg-4 col-8">
-                                                        <select class="form-select" formControlName="type">
-                                                            <option value="">Select</option>
-                                                            <option value="0">Product </option>
-                                                            <option value="1">Services</option>
-
-                                                        </select>
-                                                    </div>
-                                                    <label for="email"
-                                                        class="col-lg-2 col-4   col-form-label mr-5 mb-2">Product:</label>
-                                                    <!-- <div class="col-lg-4 col-8">
-                                                                    <input type="date" formControlName="branchcode"  class="form-control"
-                                                                        id="complianceName">
-                                                                </div> -->
-                                                    <div class="col-lg-4 col-8">
-                                                        <select class="form-select" formControlName="itemId">
-                                                            <option value="">
-                                                                -----------------------Select------------------------
-                                                            </option>
-                                                            <option value="1">Rubal </option>
-                                                            <option value="2">Urban</option>
-                                                            <option value="3">Semi-Urban</option>
-                                                            <option value="4">Metro</option>
-                                                        </select>
-                                                    </div>
-
-                                                </div>
-                                                <div class="form-group row mb-3">
-                                                    <label for="email"
-                                                        class="col-lg-2 col-4   col-form-label mr-5 mb-2">Description</label>
-                                                    <div class="col-lg-4 col-8">
-                                                        <input type="text" formControlName="discription"
-                                                            class="form-control" id="complianceName">
-                                                    </div>
-
-                                                    <label for="contactno"
-                                                        class="col-lg-2 col-4   col-form-label mr-5">Product
-                                                        Fees:</label>
-                                                    <div class="col-lg-4 col-8">
-                                                        <input type="text" formControlName="itemFees"
-                                                            class="form-control" id="complianceName">
-                                                    </div>
-
-                                                </div>
-                                                <div class="form-group row mb-3">
-                                                    <label for="email"
-                                                        class="col-lg-2 col-4   col-form-label mr-5 mb-2">Discount
-                                                        Rate(%):</label>
-
-                                                    <div class="col-lg-2 col-8">
-                                                        <select class="form-select" formControlName="discountRate">
-                                                            <option value="">0</option>
-                                                            <option value="1">1 </option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="4">4</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-lg-2 col-8">
-                                                        <input type="text" formControlName="discountAmount"
-                                                            class="form-control" id="complianceName">
-                                                    </div>
-                                                    <label for="contactno"
-                                                        class="col-lg-2 col-4   col-form-label mr-5">Tax
-                                                        Rate(%):</label>
-                                                    <div class="col-lg-2 col-8">
-                                                        <input type="text" formControlName="taxRate"
-                                                            class="form-control" id="complianceName">
-                                                    </div>
-                                                    <div class="col-lg-2 col-8">
-                                                        <input type="text" formControlName="taxAmount"
-                                                            class="form-control" id="complianceName">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row mb-3">
-                                                    <label for="contactno"
-                                                        class="col-lg-2 col-4   col-form-label mr-5">Total:</label>
-                                                    <div class="col-lg-4 col-8">
-                                                        <input type="text" formControlName="itemTotal"
-                                                            class="form-control" id="complianceName">
-                                                    </div>
-                                                    <label for="email"
-                                                        class="col-lg-2 col-4   col-form-label mr-5 mb-2">Financial
-                                                        Year::</label>
-
-                                                    <div class="col-lg-4 col-8">
-                                                        <select class="form-select" formControlName="assesmentYear">
-                                                            <option value="2023">2023</option>
-                                                            <option value="2024">2024 </option>
-                                                            <option value="2025">2025</option>
-                                                            <option value="2026">2026</option>
-                                                            <option value="2027">2027</option>
-                                                        </select>
-                                                    </div>
-
-                                                </div>
-
-                                                <div class=" col-md-12 col-sm-12 col-xs-12 mt-5 text-end">
-                                                    <div class=" col-md-9 ">
-                                                        <button class="col-lg-2 col-4 btn btn-info btn btn m-4 "
-                                                            type="submit" (click)="UpdateInvoiceitemForm()">
-
-                                                            Update
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </form>
 
                                             <div class="table-responsive"
                                                 style="background-color: #ffffff;  border-radius: 5px; padding: 10px; margin-top: 10px;">
@@ -35212,18 +35441,17 @@
                                                         <tr
                                                             *ngFor="let data of billingmaindetailsarr , let index = index">
                                                             <td>{{index+1}}</td>
-                                                            <td>{{data.prdSrvId}}</td>
+                                                            <td>{{data.prdSrvDesc}}</td>
                                                             <td>{{data.itemFees}}</td>
-                                                            <td>{{data.discountRate}}</td>
+                                                            <td>{{data.discountAmount}}</td>
                                                             <td>{{data.taxRate}}</td>
                                                             <td>{{data.total}}</td>
                                                             <td>{{data.assesmentYear}}</td>
 
                                                             <td>
                                                                 <button class="btn btn-xs" style="font-size: 13px;"
-                                                                    (click)="updatedata()">
-                                                                    <i class="fa-solid fa-pen-to-square fa-lg"
-                                                                        style=" color: #3BB161;"></i>
+                                                                    (click)="updatedata(data)">
+                                                                    <i class="fa-solid fa-pen-to-square fa-lg" style="color: #3BB161;"></i>
                                                                 </button>&nbsp;&nbsp;
                                                                 <button class="btn btn-xs" style=" font-size: 13px;"
                                                                     (click)="deleteInvoiceItem(data.itemId)">
@@ -35267,7 +35495,7 @@
                                                             <td>{{data.amount}}</td>
                                                             <td>{{data.paymentMode}}</td>
                                                             <td>{{data.paymentType}}</td>
-                                                            <td>{{data.insertBy}}</td>
+                                                            <td>{{data.paidAgainst}}</td>
                                                             <td>{{data.discription}}</td>
                                                             <td>
                                                                 <button class="btn btn-xs" style="font-size: 13px;"
@@ -35363,11 +35591,8 @@
 
                                         </div>
                                     </div>
-
-
-
                                 </div>
-                                
+
                                 <div class="tab-pane active table-responsive" [class.active]="activeTab === 'tab8'"
                                     id="tab8">
 

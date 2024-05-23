@@ -42,6 +42,7 @@ import { AddLoanModel } from './addloanModel';
 import { occupationIncomeListModel } from './occupatinincomeListModel';
 import { AccountWritingModel } from './accwritinglistModel';
 import { acWritingByIdModel } from './accwritingbyidModel';
+import { error } from 'jquery';
 
 @Component({
   selector: 'app-view-customer-details',
@@ -49,6 +50,9 @@ import { acWritingByIdModel } from './accwritingbyidModel';
   styleUrls: ['./view-customer-details.component.css']
 })
 export class ViewCustomerDetailsComponent {
+
+  // activeTab1: string = ''; // assuming you have declared this variable for tab control
+
   //Accounting
   AccountOverview: boolean = false;
   SalesReport: boolean = false;
@@ -162,10 +166,10 @@ export class ViewCustomerDetailsComponent {
   OverDraft: boolean = false;
 
   //Service Requests
-   FraudandDispute: boolean = false;
-   AccountServiceRequest: boolean = false;
-   DuplicateStatementRequest: boolean = false;
-   TrackYourOrder: boolean = false;
+  FraudandDispute: boolean = false;
+  AccountServiceRequest: boolean = false;
+  DuplicateStatementRequest: boolean = false;
+  TrackYourOrder: boolean = false;
 
   //Insurance
   PersonalAccidentProtection: boolean = false;
@@ -181,8 +185,8 @@ export class ViewCustomerDetailsComponent {
   PradhanMantriJivanJyotiBimaYojna: boolean = false;
   PradhanMantriSurakshaBimaYojna: boolean = false;
   MyPolicies: boolean = false;
-  
-  
+
+
 
 
   step1 !: FormGroup;
@@ -199,9 +203,10 @@ export class ViewCustomerDetailsComponent {
   step4 !: FormGroup;
   addbankstatement !: FormGroup;
   savebankdetails!: FormGroup;
-  // addbankstatement !: FormGroup;
+  addbankstatement1!: FormGroup;
   kycupdate!: FormGroup;
   vehicle !: FormGroup;
+  // techSupportForm: FormGroup;
 
   photoEmp1 = localStorage.getItem('photoEmp');
 
@@ -239,6 +244,7 @@ export class ViewCustomerDetailsComponent {
   showdata4: boolean = false;
   showdata6: boolean = false;
   showdata5: boolean = false;
+  AddInvoiceItems = false;
   showadd: boolean = true;
   showupdate: boolean = false;
   addcustInteractionForm !: FormGroup;
@@ -255,6 +261,7 @@ export class ViewCustomerDetailsComponent {
   UpdateTaxPlanning !: FormGroup;
   addAccountWritting !: FormGroup;
   SaveinvoiceItemForm !: FormGroup;
+  SaveinvoiceIDForm !: FormGroup;
   customeraccountdetails1: ViewCustomerdetailModel = new ViewCustomerdetailModel;
   customeraccountdetails: ViewCustomerdetailModel[] = [];
   getcompanyusedetails: ViewCustomerdetailModel[] = [];
@@ -273,7 +280,9 @@ export class ViewCustomerDetailsComponent {
   AddCustKYC: AuthKYCModel = new AuthKYCModel();
   ProfileList: ProfileModel = new ProfileModel();
   acWritingList: acWriting[] = [];
-  customerinteractiondetails: CustInteractionModel[] = [];
+  // customerinteractiondetails: CustInteractionModel[] = [];
+  customerinteractiondetails: any[] = [];
+
   customerinteractiondetailsobj: CustInteractionModel = new CustInteractionModel();
   updatesignatory !: FormGroup;
   updateaccountwriting !: FormGroup;
@@ -305,19 +314,25 @@ export class ViewCustomerDetailsComponent {
   selfemployee: boolean = false;
   occupationIncomeList: occupationIncomeListModel = new occupationIncomeListModel();
   AccountWritingList: AccountWritingModel = new AccountWritingModel();
+
   // billingmaindetails : billingmainModel[] = [] ;
+
   updateoccupationincome!: FormGroup;
   acWritingByIdList: acWritingByIdModel = new acWritingByIdModel;
   AOF2: AofTwomodel = new AofTwomodel();
+  invoiceList: any[] = [];
+
   accountNo = localStorage.getItem('accountNo');
-
-
+  branchId = localStorage.getItem('branchId');
+  branch = localStorage.getItem('branchId');
 
   id!: number;
+  AuthSignid !: number;
+
   tidData = {
     tid: 0
   }
-  
+
   accdata = {
     accountNo: 0
   }
@@ -484,6 +499,14 @@ export class ViewCustomerDetailsComponent {
   idforaccwritingupdate: any;
   Voucher: UpdateVoucherModel = new UpdateVoucherModel();
 
+  acc = { serAccWrite: true }; // your acc object
+
+  openTab(tabId: string) {
+    this.activeTab = tabId;
+  }
+
+
+
 
   constructor(private formBuilder: FormBuilder, private apiservice: ApiService, private sharedService: TidService, private route: ActivatedRoute, private router: Router) {
 
@@ -516,32 +539,10 @@ export class ViewCustomerDetailsComponent {
       telephoneno1: ['', Validators.required],
     });
 
+
+
     this.addform = this.formBuilder.group({
-      // tids :  this.id,
-      // org_ind_details_id: ['', Validators.required],
-      // date: ['', Validators.required],
-      // pan: ['', Validators.required],
-      // aadhaar: ['', Validators.required],
-      // tan: ['', Validators.required],
-      // pt: ['', Validators.required],
-      // gst: ['', Validators.required],
-      // uin: ['', Validators.required],
-      // tasc: ['', Validators.required],
-      // email: ['', Validators.required],
-      // address: ['', Validators.required],
-      // maddress: ['', Validators.required],
-
-
-      // city: ['', Validators.required],
-      // mcity: ['', Validators.required],
-      // pin: ['', Validators.required],
-      // mpin: ['', Validators.required],
-      // telephone: ['', Validators.required],
-      // mTelephone: ['', Validators.required],
-      // mobileNumber: ['', Validators.required],
-      // mMobile: ['', Validators.required],
-      // whatsAppNo: ['', Validators.required],
-      tids: localStorage.getItem('tidprofile'),
+      tids: ['', Validators.required],
       applicantName: ['', Validators.required],
       incorporationRegistrationDob: ['', Validators.required],
       pan_No: ['', Validators.required],
@@ -617,8 +618,8 @@ export class ViewCustomerDetailsComponent {
 
 
     this.addcustInteractionForm = this.formBuilder.group({
-      accountNo: localStorage.getItem('accountNo'),
-      branchId: localStorage.getItem('branchId'),
+      accountNo: ['', Validators.required],
+      branchId: ['', Validators.required],
       status: ['', Validators.required],
       followupType: ['', Validators.required],
       followupByWhom: ['', Validators.required],
@@ -630,17 +631,17 @@ export class ViewCustomerDetailsComponent {
     })
 
     this.UpdatecustInteractionForm = this.formBuilder.group({
-      accountNo: localStorage.getItem('accountNo'),
-      branchId: localStorage.getItem('branchId'),
+      accountNo: ['', Validators.required],
+      branchId: ['', Validators.required],
       status: ['', Validators.required],
       followupType: ['', Validators.required],
       followupByWhom: ['', Validators.required],
       date: ['', Validators.required],
       discription: ['', Validators.required],
       nextDate: ['', Validators.required],
-      isVisited: false,
+      isVisited: true,
       // followupId : ['', Validators.required]
-      followupId: localStorage.getItem("followupId")
+      followupId: ['', Validators.required]
 
     })
 
@@ -660,52 +661,66 @@ export class ViewCustomerDetailsComponent {
 
 
     this.addinvoiceform = this.formBuilder.group({
-      accountNo: localStorage.getItem('accountNo'),
+      accountNo: ['', Validators.required],
       // accountNo : this.route.snapshot.params['accountNo'],
       // taxName : ['', Validators.required],
       invoiceDate: ['', Validators.required],
       dueDate: ['', Validators.required],
-      branch: localStorage.getItem('branchId'),
+      branch: ['', Validators.required],
       branchType: 1
       // description:['', Validators.required],
+    })
 
-
+    this.SaveinvoiceIDForm = this.formBuilder.group({
+      // accountNo : localStorage.getItem("acccountNo") ,
+      invoiceId: [''],
+      type: ['0', Validators.required],
+      prdSrvId: ['', Validators.required],
+      discription: ['', Validators.required],
+      itemFees: [''],
+      discountRate: [0],
+      discountAmount: [{ value: '', disabled: true }],
+      taxRate: [''],
+      taxAmount: [{ value: '', disabled: true }],
+      itemTotal: [{ value: '', disabled: true }],
+      assesmentYear: ['', Validators.required]
     })
 
     this.SaveinvoiceItemForm = this.formBuilder.group({
       // accountNo : localStorage.getItem("acccountNo") ,
-      invoiceId: localStorage.getItem('invoiceIdtrans'),
-      type: [''],
+      invoiceId: [''],
+      type: ['0', Validators.required],
       prdSrvId: ['', Validators.required],
+
       discription: ['', Validators.required],
-      itemFees: ['', Validators.required],
-      discountRate: ['', Validators.required],
-      discountAmount: ['', Validators.required],
-      taxRate: ['', Validators.required],
-      taxAmount: ['', Validators.required],
-      itemTotal: ['', Validators.required],
+      itemFees: [''],
+      discountRate: [0],
+      discountAmount: [{ value: '', disabled: true }],
+      taxRate: [''],
+      taxAmount: [{ value: '', disabled: true }],
+      itemTotal: [{ value: '', disabled: true }],
       assesmentYear: ['', Validators.required]
     })
 
     this.UpdateinvoiceitemForm = this.formBuilder.group({
-      invoiceId: localStorage.getItem('invoiceIdtrans'),
-      // type : [''],
+      invoiceId: ['', Validators.required],
+      type: ['0', Validators.required],
       itemId: ['', Validators.required],
+      prdSrvDesc: ['', Validators.required],
       discription: ['', Validators.required],
-      itemFees: ['', Validators.required],
-      discountRate: ['', Validators.required],
-      discountAmount: ['', Validators.required],
-      taxRate: ['', Validators.required],
-      taxAmount: ['', Validators.required],
-      itemTotal: ['', Validators.required],
+      itemFees: [''],
+      discountRate: [0],
+      discountAmount: [{ value: '', disabled: true }],
+      taxRate: [''],
+      taxAmount: [{ value: '', disabled: true }],
+      itemTotal: [{ value: '', disabled: true }],
       assesmentYear: ['', Validators.required],
-      type: ['', Validators.required],
     })
 
     this.addpaymentForm = this.formBuilder.group({
-      invoiceId: localStorage.getItem('invoiceIdtrans'),
+      invoiceId: [''],
       amount: ['', Validators.required],
-      accountNo: localStorage.getItem('accountNo'),
+      accountNo: ['', Validators.required],
       transactionDate: ['', Validators.required],
       discription: ['', Validators.required],
       paymentMode: ['', Validators.required],
@@ -714,19 +729,20 @@ export class ViewCustomerDetailsComponent {
     })
 
     this.updatepaymentForm = this.formBuilder.group({
-      transId: localStorage.getItem('transId'),
-      invoiceId: localStorage.getItem('invoiceIdtrans'),
+      transId: ['', Validators.required],
+      invoiceId: ['', Validators.required],
       amount: ['', Validators.required],
-      accountNo: localStorage.getItem('accountNo'),
+      accountNo: ['', Validators.required],
       transactionDate: ['', Validators.required],
       discription: ['', Validators.required],
       paymentMode: ['', Validators.required],
       paymentType: ['', Validators.required],
       paidAgainst: ['', Validators.required],
+      masterEmployeeId: ['', Validators.required],
     })
 
     this.updatesignatory = this.formBuilder.group({
-      id: localStorage.getItem('authsignId'),
+      id: ['', Validators.required],
       tid: [0, Validators.required],
       name: ['', Validators.required],
       shortName: ['', Validators.required],
@@ -743,7 +759,8 @@ export class ViewCustomerDetailsComponent {
       serAccWrite: ['', Validators.required],
       serInvestPlan: ['', Validators.required],
       serTaxPlan: ['', Validators.required],
-      authIdOne: [0, Validators.required]
+      authIdOne: [0, Validators.required],
+      aadharNumber: ['', Validators.required]
     });
 
     this.step4 = this.formBuilder.group({
@@ -758,7 +775,7 @@ export class ViewCustomerDetailsComponent {
       fromDate: ['', Validators.required],
       toDate: ['', Validators.required],
       accountNo: ['', Validators.required],
-      bankDetailsId: [0, Validators.required],
+      bankDetailsId: ['', Validators.required],
       description: ['', Validators.required]
     })
 
@@ -799,10 +816,17 @@ export class ViewCustomerDetailsComponent {
       fromDate: ['', Validators.required],
       toDate: ['', Validators.required],
       accountNo: ['', Validators.required],
-      bankDetailsId: [0, Validators.required],
+      bankDetailsId: ['', Validators.required],
       description: ['', Validators.required]
     })
 
+    this.addbankstatement1 = this.formBuilder.group({
+      fromdate: ['', Validators.required],
+      toDate: ['', Validators.required],
+      accountNo: ['', Validators.required],
+      bankDetailsId: 776,
+      description: ['', Validators.required]
+    })
     //saveBankDetails
     this.savebankdetails = this.formBuilder.group({
       bankName: ['', Validators.required],
@@ -813,7 +837,7 @@ export class ViewCustomerDetailsComponent {
     })
     //tax
     this.tax = this.formBuilder.group({
-      fromDate: ['', Validators.required],
+      fromdate: ['', Validators.required],
       toDate: ['', Validators.required],
       taxType: ['', Validators.required],
       amount: ['', Validators.required],
@@ -864,6 +888,7 @@ export class ViewCustomerDetailsComponent {
       // compliances: ['', Validators.required]
       // compliances : this.occupationIncomeList.compliances
     })
+
 
 
   }
@@ -1135,31 +1160,40 @@ export class ViewCustomerDetailsComponent {
   AddInvoice() {
     // confirm("Please Select Customer")
     this.showdata2 = !this.showdata2;
-    this.showdata3 = !this.showdata3
+    this.showdata3 = !this.showdata3;
+    this.AddInvoiceItems = false;
+    this.showdata6 = false;
+    // this.AddInvoiceItems =true;
   }
   AddInvoice1() {
     this.showdata2 = true;
     this.showdata3 = false;
+    this.AddInvoiceItems = false;
+    this.showdata6 = false;
   }
   AddInvoice2() {
     // confirm("Please Select Customer")
     this.showdata4 = !this.showdata4;
     this.showdata2 = !this.showdata2
+    this.AddInvoiceItems = false;
   }
   AddInvoice3() {
     this.showdata2 = true;
     this.showdata4 = false;
+    this.AddInvoiceItems = false;
+    this.showdata6 = false;
   }
   AddInvoice4() {
     this.showdata2 = true;
     this.showdata5 = false;
+    this.AddInvoiceItems = false;
   }
 
 
-  view() {
-    this.showdata5 = !this.showdata5;
-    this.showdata2 = !this.showdata2
-  }
+  // view() {
+  //   this.showdata5 = !this.showdata5;
+  //   this.showdata2 = !this.showdata2
+  // }
 
   AddAccountWritting() {
     confirm("Please Select Customer")
@@ -1231,39 +1265,79 @@ export class ViewCustomerDetailsComponent {
     this.showdata1 = false;
   }
 
-  updatedata() {
-    this.showadd = !this.showadd;
-    this.showupdate = !this.showupdate;
+  // updatedata() {
+  //   this.showadd = !this.showadd;
+  //   this.showupdate = !this.showupdate;
 
 
-  }
+  // }
 
-  showpayment(transactionId: any) {
-    this.showdata6 = !this.showdata6;
-    this.showdata5 = false;
-    localStorage.setItem('transId', transactionId)
-  }
+  // showpayment(transactionId: any) {
+  //   this.showdata6 = !this.showdata6;
+  //   this.showdata5 = false;
+  //   localStorage.setItem('transId', transactionId)
+  // }
 
   customerinteraction() {
     this.showdatacust = !this.showdatacust;
     this.showdatacust1 = !this.showdatacust1;
   }
   customerinteraction1() {
-    this.showdatacust = true;
-    this.showdatacust1 = false;
-  }
-  customerinteraction2(followupId: any) {
-    this.showdatacust = !this.showdatacust;
-    this.showdatacust2 = !this.showdatacust2;
-    localStorage.setItem("followupId", followupId);
-
-  }
-
-  customerinteraction3() {
-    this.showdatacust = true;
+    // this.showdatacust = true;
+    // this.showdatacust = !this.showdatacust;
     this.showdatacust2 = false;
+    this.showdatacust = true;
   }
 
+  // customerinteraction2(followupId: any) {
+  //   this.showdatacust = !this.showdatacust;
+  //   this.showdatacust2 = !this.showdatacust2;
+  //   localStorage.setItem("followupId", followupId);
+
+  // }
+
+  // customerinteraction3() {
+  //   this.showdatacust = true;
+  //   this.showdatacust2 = false;
+  // }
+
+  // SaveinvoiceIDForm
+  //   get itemType() {
+  //     return this.SaveinvoiceIDForm.get('type')!;
+  // }
+
+  onIDTypeChange() {
+    if (this.SaveinvoiceIDForm.get('type')?.value === '0') {
+      this.SaveinvoiceIDForm.get('srvId')?.reset();
+    } else if (this.SaveinvoiceIDForm.get('type')?.value === '1') {
+      this.SaveinvoiceIDForm.get('prdSrvId')?.reset();
+    }
+  }
+
+
+  get itemType() {
+    return this.SaveinvoiceItemForm.get('type')!;
+  }
+
+  onItemTypeChange() {
+    if (this.SaveinvoiceItemForm.get('type')?.value === '0') {
+      this.SaveinvoiceItemForm.get('srvId')?.reset();
+    } else if (this.SaveinvoiceItemForm.get('type')?.value === '1') {
+      this.SaveinvoiceItemForm.get('prdSrvId')?.reset();
+    }
+  }
+
+  onUpdateTypeChange() {
+    if (this.UpdateinvoiceitemForm.get('type')?.value === '0') {
+      this.UpdateinvoiceitemForm.get('srvId')?.reset();
+    } else if (this.UpdateinvoiceitemForm.get('type')?.value === '1') {
+      this.UpdateinvoiceitemForm.get('prdSrvId')?.reset();
+    }
+  }
+
+  get updateType() {
+    return this.UpdateinvoiceitemForm.get('type')!;
+  }
 
 
   ngOnInit() {
@@ -1290,7 +1364,7 @@ export class ViewCustomerDetailsComponent {
     );
 
 
-    console.log('@$$$$$$$$$$$$$$$$$$$$$$#3#@$@#$@$#@$#$@$#$@#@$#$@#$@#$@#$', localStorage.getItem('photoEmp'));
+    console.log('@$$$$$$$', localStorage.getItem('photoEmp'));
     this.apiservice.getFile(this.photoEmp1).subscribe(
       (response: any) => {
         this.photoEmp1 = response;
@@ -1320,6 +1394,22 @@ export class ViewCustomerDetailsComponent {
           (error: any) => { console.error(error); }
         )
 
+
+
+        this.apiservice.getInvoice(this.accountList.accountNo).subscribe(
+          (response: any) => {
+            console.log('All Invoice !!!!!!!!!!!!!!!', response.data);
+            this.invoiceList = response.data;
+
+            localStorage.setItem("invoiceId", response.data[0].invoiceId);
+            console.log('Khushal invoiceId!!!!!!!!!!!!!!', localStorage.getItem('invoiceId'));
+
+          },
+          (error: any) => {
+            console.error(error);
+          }
+        )
+
         this.apiservice.getBankStatement(this.accountList.accountNo).subscribe(
           (response: any) => {
             this.bankStatementList = response.data;
@@ -1336,6 +1426,60 @@ export class ViewCustomerDetailsComponent {
           (error: any) => { console.error(error); }
         )
 
+        if (this.accountNo) {
+          this.addcustInteractionForm.patchValue({ accountNo: this.accountList.accountNo });
+        }
+
+        if (this.branchId) {
+          this.addcustInteractionForm.patchValue({ branchId: this.accountList.branchId });
+        }
+
+        if (this.accountNo) {
+          this.UpdatecustInteractionForm.patchValue({ accountNo: this.accountList.accountNo });
+
+        }
+        if (this.branchId) {
+          this.UpdatecustInteractionForm.patchValue({ branchId: this.accountList.branchId });
+        }
+
+        if (this.invoiceId) {
+          this.SaveinvoiceItemForm.patchValue({ invoiceId: localStorage.getItem('invoiceId') });
+        }
+
+        if (this.accountNo) {
+          this.addinvoiceform.patchValue({ accountNo: this.accountList.accountNo });
+          this.addpaymentForm.patchValue({ accountNo: this.accountList.accountNo });
+          this.updatepaymentForm.patchValue({ accountNo: this.accountList.accountNo });
+        }
+
+        if (this.branch) {
+          this.addinvoiceform.patchValue({ branch: this.accountList.branchId });
+        }
+
+
+
+        this.apiservice.getCustomerInteraction(this.accountList.accountNo).subscribe(
+          (res: any) => {
+            console.log("customer Interaction Details!!!!!!!!!!!!!", res.data);
+            this.customerinteractiondetails = res.data;
+          },
+          (error: any) => {
+            console.error(error);
+          }
+        )
+
+        this.fetchCustomerInteractions();
+
+
+        // this.apiservice.getinvoiceitem(localStorage.getItem('invoiceIdItem')).subscribe(
+        //   (res: any) => {
+        //     console.log("Get Invoice Item!!!!!!!!!!!!!", res.data);
+        //     this.billingmaindetailsarr = res.data2;
+        //   },
+        //   (error: any) => {
+        //     console.error(error);
+        //   }
+        // )
 
         // getTransaction
         this.apiservice.getTransaction(this.accountList.accountNo).subscribe(
@@ -1361,6 +1505,27 @@ export class ViewCustomerDetailsComponent {
             console.error(error);
           }
         )
+
+
+        this.apiservice.getAccDetails(this.accountList.accountNo).subscribe(
+          (response: any) => {
+            this.AccDetailsList = response.data;
+          },
+          (error: any) => {
+            console.error(error);
+          }
+        )
+
+        //TaxTypeList
+
+        this.apiservice.getTaxType().subscribe(
+          (response: any) => {
+            this.TaxTypeList = response.data;
+            // console.log("compliance", response.data);
+          },
+          (error: any) => { console.error(error); }
+        )
+
 
         // console.log('********** Doc List **************', this.accountList.accountNo);
         this.accdata.accountNo = this.accountList.accountNo;
@@ -1468,18 +1633,18 @@ export class ViewCustomerDetailsComponent {
     this.apiservice.getAuthorisedSignatory(this.id).subscribe(
       (response: any) => {
         this.SignatoryList = response.data;
-        localStorage.setItem('photo', response.data.photo)
-        // console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%,,,,,,,,", response.data);
+        localStorage.setItem('photo', response.data.photo);
+        console.log("All Authorised Signatory,,,,,,", response.data);
+        console.log("All Authorised Signatory ID ,,,,,,", response.data.id);
       },
       (error: any) => { console.error(error); }
     )
 
     this.getproductdetails(this.accountNo);
-    this.getCUstInteractiondetails(this.accountNo);
-    this.getbillingmain(303);
-    this.getinvoiceitem(303);
-    this.getinvoiceitemdetailsbyid(303);
-    this.gettransctiondetailsbyid(303);
+    // this.getbillingmain(303);
+    // this.getinvoiceitem(303);
+    // this.getinvoiceitemdetailsbyid(303);
+    // this.gettransctiondetailsbyid(303);
 
     this.apiservice.productlist().subscribe(  //AOF6
       (data: any) => {
@@ -1490,9 +1655,60 @@ export class ViewCustomerDetailsComponent {
       }
     );
 
+    this.fetchInvoices();
+    // this.logInvoices();
+  }
+
+  fetchInvoices() {
+    this.apiservice.getInvoice(this.accountList.accountNo).subscribe(
+      (response: any) => {
+        console.log('All Invoice !!!!!!!!!!!!!!!', response.data);
+        this.invoiceList = response.data;
+      },
+      (error: any) => {
+        console.error(error);
+      }
+    );
+  }
+
+  view(invoiceId: string) {
+    this.showdata5 = true;
+    this.showdata4 = false;
+    this.showdata2 = false;
+    this.showupdate = false;
+    this.showadd = true;
+    this.AddInvoiceItems = false;
+    this.SaveinvoiceItemForm.patchValue({ invoiceId });
+    localStorage.setItem('invoiceId', invoiceId); // Store the invoiceId in localStorage
+
+    this.apiservice.getinvoiceitem(invoiceId).subscribe(
+      (res: any) => {
+        console.log("Get Invoice Item!!!!!!!!!!!!!", res.data2);
+        this.billingmaindetailsarr = res.data2;
+      },
+      (error: any) => {
+        console.error(error);
+      }
+    );
+  }
+
+  payNow(invoiceId: string) {
+    this.showdata4 = true;
+    this.showdata2 = false;
+    this.showdata5 = false;
+    this.AddInvoiceItems = false;
+    this.addpaymentForm.patchValue({ invoiceId });
+  }
+
+  // In your component TypeScript file
+  isInvoicePaid(status: string): boolean {
+    return status.toLowerCase() === 'paid';
   }
 
 
+  // addInvoiceItemsm(invoiceId: string) {
+  //   this.addcustInteractionForm.patchValue({ invoiceId });
+  // }
 
   AddVoucher() {
     // console.log("AddcustInteraction,,,,,,,", this.accountList.accountNo);
@@ -1565,16 +1781,18 @@ export class ViewCustomerDetailsComponent {
   //         console.log(response.data);
   //         window.location.reload();
   //       },
-  //       (error: any) => {
+  //       (error: any) => {ProfileList
   //         console.error(error);
   //       }
   //     )
   //   }
 
   updateProfile() {
+    this.addform.patchValue({ tids: this.id });
     console.log("resppppp", this.addform.value);
     this.apiservice.updateProfile(this.addform.value).subscribe(
       (response: any) => {
+        console.log("Update Profile!!!!!!!!!!!!!!!", response);
         Swal.fire({
           title: "Record Updated!",
           icon: "success"
@@ -1590,6 +1808,7 @@ export class ViewCustomerDetailsComponent {
     );
   }
 
+
   // onsubmit2() {
   //   console.log("Get Signatory,,,,,, ::::::: ", this.step2.value, this.photo, this.sign);
   //   this.apiservice.aof2Form(this.step2.value, this.photo, this.sign).subscribe(
@@ -1602,18 +1821,21 @@ export class ViewCustomerDetailsComponent {
   //   )
   // }
 
+
+
+
+
   onsubmit2() {
     this.AddAuthSign = this.step2.value;
-    console.log('ADD Signatory,,,,,,', this.step2.value);
+
     this.AddAuthSign.tid = this.id;
-    console.log("ADD Signatory,,,,, ::::::: ", this.AddAuthSign, this.photo, this.sign);
     this.apiservice.aof2Form(this.AddAuthSign, this.photo, this.sign).subscribe(
       (response: any) => {
+        console.log("ADD Signatory,,,,, ::::::: ", response.data);
         Swal.fire({
           title: "Record Saved!",
           icon: "success"
         });
-        console.log('Get Signatory,,,,,,', response.data);
       },
       (error: any) => {
         console.error(error);
@@ -1628,13 +1850,37 @@ export class ViewCustomerDetailsComponent {
     )
   }
 
-  onsubmit3() {
+  Edit(data: any): void {
+    this.updatesignatory.patchValue({
+      date: data.date,
+      gender: data.gender,
+      serFinanPlan: data.finanPlan,
+      motherName: data.motherName,
+      mobile: data.mobile,
+      telephone: data.telephone,
+      serAccWrite: data.acc_write,
+      serTaxPlan: data.taxPlan,
+      tid: data.tid,
+      religion: data.religion,
+      serInvestPlan: data.investPlan,
+      aadharNumber: data.aadharNumber,
+      nationality: data.nationality,
+      name: data.name,
+      authIdOne: data.id,
+      designation: data.designation,
+      shortName: data.shortName,
+      email: data.email
+    });
+  }
+
+
+
+  onsubmit3(): void {
     this.authsignIdList = this.updatesignatory.value;
-    this.authsignIdList.tid = this.id;
-    this.authsignIdList.authIdOne = localStorage.getItem('authsignId'),
-      console.log("Get Signatory,,,,, ::::::: ", this.authsignIdList, this.photo, this.sign);
+    console.log("Get Signatory,,,,, ::::::: ", this.authsignIdList, this.photo, this.sign);
     this.apiservice.aof2Form(this.authsignIdList, this.photo, this.sign).subscribe(
       (response: any) => {
+        console.log(" Updated Signatory Data,,,,, ::::::: ", response.data);
         Swal.fire({
           title: "Record Updated!",
           icon: "success"
@@ -1649,32 +1895,22 @@ export class ViewCustomerDetailsComponent {
 
   //CustomerInteraction
 
-  getCUstInteractiondetails(accountno: any) {
-    // var accountno = 
-    this.apiservice.getCustomerInteraction(this.accountNo).subscribe(
-      (res: any) => {
-        // this.getCUstInteractiondetails =res.data;
-        this.customerinteractiondetails = res.data;
-        // localStorage.setItem("followupId", res.data.followupId);
-        // localStorage.setItem("followupId", this.customerinteractiondetailsobj.followupId);
-        console.log("customerinteractiondetails", res.data);
-        // this.getproddetails = res.data ;
-
-      },
-      (error: any) => {
-        console.error(error);
-      }
-    )
-
-  }
-
-
   AddcustInteraction() {
-    console.log("AddcustInteraction", this.addcustInteractionForm.value);
+    // this.addcustInteractionForm.value.acccountNo = localStorage.getItem('accountNo')
+    // this.addcustInteractionForm.patchValue({ acccountNo: localStorage.getItem('accountNo') });
 
+    if (!this.addcustInteractionForm.value.nextDate) {
+      this.addcustInteractionForm.patchValue({
+        nextDate: '0002-11-30'
+      });
+    }
+
+
+    console.log("Updated accountNo:", this.accountNo);
+    console.log("AddcustInteraction", this.addcustInteractionForm.value);
     this.apiservice.addCustInteraction(this.addcustInteractionForm.value).subscribe(
       (response: any) => {
-        //  console.log("AddcustInteraction",response.data);
+        console.log("AddcustInteraction", response.data);
         Swal.fire({
           title: "Record Saved!",
           icon: "success"
@@ -1696,26 +1932,16 @@ export class ViewCustomerDetailsComponent {
 
   updateCustInteraction() {
 
-    console.log("updateCustInteraction ::::: ", this.UpdatecustInteractionForm.value);
-    let followupId = localStorage.getItem("followupId");
-
-    if (!followupId) {
-      console.error("FollowupId not found in local storage");
-      return;
-    }
-    // this.updateCustInteraction.patchValue({
-    //  followupId: followupId,
-
-    // });
-    // localStorage.getItem
+    this.showdatacust2 = false;
+    this.showdatacust = true;
     this.apiservice.updateCustInteraction(this.UpdatecustInteractionForm.value,).subscribe(
       (response: any) => {
-        //  console.log(response.data);
+        console.log(response.data);
         Swal.fire({
           title: "Record Updated!",
           icon: "success"
         });
-        setInterval(() => { window.location.reload() }, 1000);
+        // setInterval(() => { window.location.reload() }, 1000);
       },
       (error: any) => {
         console.error(error);
@@ -1727,6 +1953,53 @@ export class ViewCustomerDetailsComponent {
       }
     );
   }
+
+
+  fetchCustomerInteractions() {
+    this.apiservice.getCustomerInteraction(this.accountList.accountNo).subscribe(
+      (res: any) => {
+        console.log("customer Interaction Details:", res.data);
+        this.customerinteractiondetails = res.data;
+
+      },
+      (error: any) => {
+        console.error(error);
+      }
+    );
+  }
+
+  customerinteraction2(followupId: string | number) {
+    this.showdatacust = false;
+    // Find the interaction details by followupId
+    const interactionData = this.customerinteractiondetails.find(item => item.followupId === followupId);
+
+    if (interactionData) {
+      // Toggle the visibility of the modals
+      // this.showdatacust = !this.showdatacust;
+      this.showdatacust2 = !this.showdatacust2;
+
+      // Store the followupId in local storage
+      localStorage.setItem("followupId", String(followupId));
+
+      // Patch the form with the interaction data
+      this.UpdatecustInteractionForm.patchValue({
+        accountNo: interactionData.accountNo,
+        followupType: interactionData.followupType,
+        date: interactionData.date,
+        discription: interactionData.desc,
+        branchId: interactionData.branchId,
+        followupByWhom: interactionData.followupByWhom,
+        status: interactionData.status,
+        isVisited: interactionData.isVisited,
+        nextDate: interactionData.nextDate,
+        followupId: interactionData.followupId
+      });
+    } else {
+      console.error(`Interaction with followupId ${followupId} not found.`);
+    }
+  }
+
+
   deletecustInteraction(followupId: any) {
     Swal.fire({
       title: "Are you sure?",
@@ -1767,8 +2040,6 @@ export class ViewCustomerDetailsComponent {
     this.apiservice.getProductSer(this.accountNo).subscribe(
       (res: any) => {
         this.customeraccountdetails1 = res.data
-
-
       },
       (error: any) => {
         console.error(error);
@@ -1887,39 +2158,45 @@ export class ViewCustomerDetailsComponent {
    * 
    * ts-logic for integration
    */
-  getBilling(InvoiceId: any) {
-    this.apiservice.getBill(303).subscribe((res: any) => this.getBilling = res.data);
-  }
+  // getBilling(InvoiceId: any) {
+  //   this.apiservice.getBill(303).subscribe((res: any) => this.getBilling = res.data);
+  // }
 
 
 
 
   // billing
-  getbillingmain(InvoiceId: any) {
+  // getbillingmain(InvoiceId: any) {
 
-    this.apiservice.getbillingmain(303).subscribe(
-      (res: any) => {
-        this.billingmaindetails = res.data;
+  //   this.apiservice.getbillingmain(303).subscribe(
+  //     (res: any) => {
+  //       this.billingmaindetails = res.data;
 
-        // console.log("GetBillingdetails********", res.data);
-        // this.getproddetails = res.data ;
+  //       // console.log("GetBillingdetails********", res.data);
+  //       // this.getproddetails = res.data ;
 
-      },
-      (error: any) => {
-        console.error(error);
-      }
-    )
-  }
+  //     },
+  //     (error: any) => {
+  //       console.error(error);
+  //     }
+  //   )
+  // }
 
   savebillinginvoice() {
-    console.log("AddVoucher", this.addinvoiceform.value);
+    console.log("Sent Save Invoice !!!!!!!!!", this.addinvoiceform.value);
     this.apiservice.savebillinginvoice(this.addinvoiceform.value).subscribe(
       (response: any) => {
-        //  console.log("AddVoucher",response.data);
+        console.log("Save Invoice !!!!!!!!!", response.invoiceId);
+        localStorage.setItem('saveInvoiceId', response.invoiceId);
+        //  console.log("save InvoiceId !!!!!!!!!",localStorage.getItem('saveInvoiceId'));
         Swal.fire({
           title: "Record Saved!",
           icon: "success"
         });
+
+        this.AddInvoiceItems = true;
+        this.showdata3 = false;
+
       },
       (error: any) => {
         console.error(error);
@@ -1927,16 +2204,36 @@ export class ViewCustomerDetailsComponent {
           title: "Error!",
           icon: "error"
         });
+        this.AddInvoiceItems = false;
+        this.showdata3 = true;
       }
     );
 
   }
 
-  saveinvoiceitem() {
-    console.log("SaveInvoiceItemDetail", this.SaveinvoiceItemForm.value);
-    this.apiservice.saveinvoiceitem(this.SaveinvoiceItemForm.value).subscribe(
+
+  saveinvoiceID(): void {
+    // Temporarily enable the readonly fields to include them in the form value
+    this.SaveinvoiceIDForm.get('discountAmount')?.enable();
+    this.SaveinvoiceIDForm.get('taxAmount')?.enable();
+    this.SaveinvoiceIDForm.get('itemTotal')?.enable();
+
+    // Get the form value
+    const formData = this.SaveinvoiceIDForm.getRawValue();
+
+    // Re-disable the readonly fields
+    this.SaveinvoiceIDForm.get('discountAmount')?.disable();
+    this.SaveinvoiceIDForm.get('taxAmount')?.disable();
+    this.SaveinvoiceIDForm.get('itemTotal')?.disable();
+
+    // Add invoiceId from localStorage
+    formData.invoiceId = localStorage.getItem('saveInvoiceId');
+
+    console.log("Save Invoice Id", formData);
+    this.apiservice.saveinvoiceitem(formData).subscribe(
       (response: any) => {
-        //  console.log("AddVoucher",response.data);
+        console.log("save invoice item !!!!!!!!!!!!!!!", response);
+
         Swal.fire({
           title: "Record Saved!",
           icon: "success"
@@ -1952,32 +2249,127 @@ export class ViewCustomerDetailsComponent {
     );
   }
 
-  getinvoiceitem(InvoiceId: any) {
 
-    this.apiservice.getinvoiceitem(303).subscribe(
-      (res: any) => {
-        console.log("invoiceitem data ::::::: ", res);
-        this.billingmaindetailsarr = res.data2;
-        localStorage.setItem("itemIdtrans", res.data2[0].invoceId)
-        console.log("invoiceitem data ::::::: ", res.data2[0].itemId);
+  // saveinvoiceitem() {
+  //   console.log("SaveInvoiceItemDetail", this.SaveinvoiceItemForm.value);
+  //   this.apiservice.saveinvoiceitem(this.SaveinvoiceItemForm.value).subscribe(
+  //     (response: any) => {
+  //        console.log("save invoice item !!!!!!!!!!!!!!!",response);
+  //        console.log("invoice item invoice id" , response.invoceId);
+
+  //       Swal.fire({
+  //         title: "Record Saved!",
+  //         icon: "success"
+  //       });
+  //     },
+  //     (error: any) => {
+  //       console.error(error);
+  //       Swal.fire({
+  //         title: "Error!",
+  //         icon: "error"
+  //       });
+  //     }
+  //   );
+  // }
+
+  saveinvoiceitem(): void {
+    // Temporarily enable the readonly fields to include them in the form value
+    this.SaveinvoiceItemForm.get('discountAmount')?.enable();
+    this.SaveinvoiceItemForm.get('taxAmount')?.enable();
+    this.SaveinvoiceItemForm.get('itemTotal')?.enable();
+
+    // Get the form value
+    const formData = this.SaveinvoiceItemForm.getRawValue();
+
+    // Re-disable the readonly fields
+    this.SaveinvoiceItemForm.get('discountAmount')?.disable();
+    this.SaveinvoiceItemForm.get('taxAmount')?.disable();
+    this.SaveinvoiceItemForm.get('itemTotal')?.disable();
+
+    console.log("SaveInvoiceItemDetail", formData);
+    this.apiservice.saveinvoiceitem(formData).subscribe(
+      (response: any) => {
+        console.log("save invoice item !!!!!!!!!!!!!!!", response);
+        console.log("invoice item invoice id", response.invoceId);
+
+        Swal.fire({
+          title: "Record Saved!",
+          icon: "success"
+        });
       },
       (error: any) => {
         console.error(error);
+        Swal.fire({
+          title: "Error!",
+          icon: "error"
+        });
       }
-    )
+    );
   }
 
-  UpdateInvoiceitemForm() {
+  // getinvoiceitem(InvoiceId: any) {
+
+  //   this.apiservice.getinvoiceitem(this.billingmaindetailsarr.values).subscribe(
+  //     (res: any) => {
+  //       console.log("invoiceitem data ::::::: ", res);
+  //       this.billingmaindetailsarr = res.data2;
+  //       localStorage.setItem("itemIdtrans", res.data2[0].invoceId)
+  //       console.log("invoiceitem data ::::::: ", res.data2[0].itemId);
+  //     },
+  //     (error: any) => {
+  //       console.error(error);
+  //     }
+  //   )
+  // }
+
+  updatedata(data: any): void {
+    this.showupdate = true;
+    this.showadd = false;
+    // this.showupdate = !this.showupdate;
+
+    this.UpdateinvoiceitemForm.patchValue({
+      invoiceId: data.invoiceId,
+      itemId: data.itemId,
+      prdSrvDesc: data.prdSrvDesc,
+      itemFees: data.itemFees,
+      discountAmount: data.discountAmount,
+      taxRate: data.taxRate,
+      itemTotal: data.total,
+      assesmentYear: data.assesmentYear,
+      taxAmount: data.taxAmount,
+      discountRate: data.discountAmount,
+      discription: data.discription
+    });
+
+  }
+
+
+
+  UpdateInvoiceitemForm(): void {
+    // Temporarily enable the readonly fields to include them in the form value
+    this.UpdateinvoiceitemForm.get('discountAmount')?.enable();
+    this.UpdateinvoiceitemForm.get('taxAmount')?.enable();
+    this.UpdateinvoiceitemForm.get('itemTotal')?.enable();
+
+    // Get the form value
+    const formData = this.UpdateinvoiceitemForm.getRawValue();
+
+    // Re-disable the readonly fields
+    this.UpdateinvoiceitemForm.get('discountAmount')?.disable();
+    this.UpdateinvoiceitemForm.get('taxAmount')?.disable();
+    this.UpdateinvoiceitemForm.get('itemTotal')?.disable();
+    this.UpdateinvoiceitemForm.get('discountAmount')?.enable();
+    this.UpdateinvoiceitemForm.get('taxAmount')?.enable();
+    this.UpdateinvoiceitemForm.get('itemTotal')?.enable();
+
     console.log('UpdateinvoiceitemForm', this.UpdateinvoiceitemForm.value);
 
     this.apiservice.updateinvoiceitem(this.UpdateinvoiceitemForm.value).subscribe(
       (res: any) => {
-        // console.log(response.data);
         Swal.fire({
           title: "Record Updated!",
           icon: "success"
         });
-        // setInterval(()=>{window.location.reload()},1000);
       },
       (error: any) => {
         console.error(error);
@@ -1985,10 +2377,14 @@ export class ViewCustomerDetailsComponent {
           title: "Error!",
           icon: "error"
         });
-        // setInterval(()=>{window.location.reload()},1000);
       }
-    )
+    );
   }
+
+  toggleViewCustomerInteraction() {
+    this.showdatacust = !this.showdatacust;
+  }
+
 
   getinvoiceitemdetailsbyid(id: any) {
 
@@ -1996,7 +2392,7 @@ export class ViewCustomerDetailsComponent {
       (res: any) => {
         this.billingmaindetailsarr = res.data
         this.UpdateinvoiceitemForm.patchValue({
-          itemId: res.data.itemId,
+          transId: res.data.itemId,
           discription: res.data.discription,
           itemFees: res.data.itemFees,
           discountRate: res.data.discountRate,
@@ -2052,7 +2448,7 @@ export class ViewCustomerDetailsComponent {
     console.log("SavePaymentDetail", this.addpaymentForm.value);
     this.apiservice.savepayment(this.addpaymentForm.value).subscribe(
       (response: any) => {
-        //  console.log("AddVoucher",response.data);
+        console.log("AddVoucher", response.data);
         Swal.fire({
           title: "Record Saved!",
           icon: "success"
@@ -2066,17 +2462,41 @@ export class ViewCustomerDetailsComponent {
         });
       }
     );
-    setInterval(() => { window.location.reload() }, 2000);
+    // setInterval(() => { window.location.reload() }, 2000);
 
   }
 
+  showpayment(transactionId: any) {
+    this.showdata6 = !this.showdata6;
+    this.showdata5 = false;
+
+    const selectedTransaction = this.billingmaindetailsarr1.find(item => item.transactionId === transactionId);
+    if (selectedTransaction) {
+      this.updatepaymentForm.patchValue({
+        transId: selectedTransaction.transactionId,
+        invoiceId: selectedTransaction.invoceId,
+        amount: selectedTransaction.amount,
+        transactionDate: selectedTransaction.transactionDate,
+        discription: selectedTransaction.discription,
+        paymentMode: selectedTransaction.paymentMode,
+        paymentType: selectedTransaction.paymentType,
+        paidAgainst: selectedTransaction.paidAgainst,
+        masterEmployeeId: selectedTransaction.insertBy,
+      });
+    }
+  }
+
   updatepayment() {
-    console.log("uPDATEPaymentDetail", this.updatepaymentForm.value);
+    // if (this.updatepaymentForm.invalid) {
+    //   return;
+    // }
+
+    console.log("UpdatePaymentDetail", this.updatepaymentForm.value);
     this.apiservice.updatepayment(this.updatepaymentForm.value).subscribe(
       (response: any) => {
-        //  console.log("AddVoucher",response.data);
+        console.log("UpdatePayment", response.data);
         Swal.fire({
-          title: "Record Saved!",
+          title: "Record Updated!",
           icon: "success"
         });
       },
@@ -2117,7 +2537,7 @@ export class ViewCustomerDetailsComponent {
   }
 
   deleteInvoiceItem(itemId: any) {
-    const invoiceId = localStorage.getItem('invoiceIdtrans');
+    const invoiceId = localStorage.getItem('invoiceId');
     const iddata = {
       itemId: itemId,
       invoiceId: invoiceId
@@ -2127,7 +2547,7 @@ export class ViewCustomerDetailsComponent {
 
     this.apiservice.deleteInvoiceItem(iddata).subscribe(
       (response: any) => {
-        // console.log(response.data);
+        console.log(response.data);
         Swal.fire({
           title: "Record Deleted!",
           icon: "success"
@@ -2263,10 +2683,6 @@ export class ViewCustomerDetailsComponent {
     }
   }
 
-
-
-
-
   picfile() {
     if (this.signitury && this.signitury[0] && this.signitury[0].photo) {
       let filePath = localStorage.getItem('photoEmp');
@@ -2280,8 +2696,17 @@ export class ViewCustomerDetailsComponent {
           // this.signitury = response;
           window.open(response);
           console.log("File Response: ", response);
+          Swal.fire({
+            title: "Record Saved!",
+            icon: "success"
+          });
         },
-        (error: any) => { console.error("File Error Response: ", error); }
+        (error: any) => {
+          console.error("File Error Response: ", error); Swal.fire({
+            title: "Error!",
+            icon: "error"
+          });
+        }
       );
     } else {
       console.error("Invalid signitury data or photo path.");
@@ -2296,9 +2721,17 @@ export class ViewCustomerDetailsComponent {
     this.apiservice.saveVehicle(this.VehicleList, this.vehicledetails).subscribe(
       (response: any) => {
         console.log('SAVE', response.status);
+        Swal.fire({
+          title: "Record Saved!",
+          icon: "success"
+        });
       },
       (error: any) => {
         console.error("not working", error);
+        Swal.fire({
+          title: "Error!",
+          icon: "error"
+        });
       }
     )
   }
@@ -2312,9 +2745,19 @@ export class ViewCustomerDetailsComponent {
     this.apiservice.saveBankStatement(this.bankstatementList, this.bankstatement).subscribe(
       (response: any) => {
         console.log('SAVE', response.status);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Your data has been saved successfully!'
+        });
       },
       (error: any) => {
         console.error("not working", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        });
       }
     )
   }
@@ -2327,9 +2770,19 @@ export class ViewCustomerDetailsComponent {
     this.apiservice.saveBankDetails(this.bankdetailslist, this.bankdetails).subscribe(
       (response: any) => {
         console.log('SAVE', response.status);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Your data has been saved successfully!'
+        });
       },
       (error: any) => {
         console.error("not working", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        });
       }
     )
   }
@@ -2341,9 +2794,20 @@ export class ViewCustomerDetailsComponent {
     this.apiservice.saveSalesInvoice(this.salesInvoiceList, this.salesinvoice).subscribe(
       (response: any) => {
         console.log('SAVE', response.status);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Your data has been saved successfully!'
+        });
+
       },
       (error: any) => {
         console.error("not working", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        });
       }
     )
   }
@@ -2356,9 +2820,19 @@ export class ViewCustomerDetailsComponent {
     this.apiservice.savePurchaseInvoice(this.salesInvoiceList, this.purchaseinvoice).subscribe(
       (response: any) => {
         console.log('SAVE', response.status);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Your data has been saved successfully!'
+        });
       },
       (error: any) => {
         console.error("not working", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        });
       }
     )
   }
@@ -2371,11 +2845,138 @@ export class ViewCustomerDetailsComponent {
     this.apiservice.saveExpensesDetails(this.salesInvoiceList, this.expense).subscribe(
       (response: any) => {
         console.log('SAVE', response.status);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Your data has been saved successfully!'
+        });
       },
       (error: any) => {
         console.error("not working", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        });
       }
     )
+  }
+
+  calculateDiscount(): void {
+    const discountRate = this.SaveinvoiceItemForm.get('discountRate')?.value;
+    const itemFees = this.SaveinvoiceItemForm.get('itemFees')?.value;
+
+    if (!isNaN(discountRate) && !isNaN(itemFees) && itemFees !== '') {
+      const discountAmount = (itemFees * discountRate) / 100;
+      this.SaveinvoiceItemForm.patchValue({ discountAmount: discountAmount.toFixed(2) });
+    } else {
+      this.SaveinvoiceItemForm.patchValue({ discountAmount: '' });
+    }
+  }
+
+  calculateTax(): void {
+    const taxRate = this.SaveinvoiceItemForm.get('taxRate')?.value;
+    const itemFees = this.SaveinvoiceItemForm.get('itemFees')?.value;
+
+    if (!isNaN(taxRate) && !isNaN(itemFees) && itemFees !== '') {
+      const taxAmount = (itemFees * taxRate) / 100;
+      this.SaveinvoiceItemForm.patchValue({ taxAmount: taxAmount.toFixed(2) });
+    } else {
+      this.SaveinvoiceItemForm.patchValue({ taxAmount: '' });
+    }
+  }
+
+  calculateTotal(): void {
+    const itemFees = parseFloat(this.SaveinvoiceItemForm.get('itemFees')?.value) || 0;
+    const discountAmount = parseFloat(this.SaveinvoiceItemForm.get('discountAmount')?.value) || 0;
+    const taxAmount = parseFloat(this.SaveinvoiceItemForm.get('taxAmount')?.value) || 0;
+
+    const total = itemFees - discountAmount + taxAmount;
+    this.SaveinvoiceItemForm.patchValue({ itemTotal: total.toFixed(2) });
+  }
+
+  onInputChange(): void {
+    this.calculateDiscount();
+    this.calculateTax();
+    this.calculateTotal();
+  }
+
+  calculateDiscount1(): void {
+    const discountRate = this.SaveinvoiceIDForm.get('discountRate')?.value;
+    const itemFees = this.SaveinvoiceIDForm.get('itemFees')?.value;
+
+    if (!isNaN(discountRate) && !isNaN(itemFees) && itemFees !== '') {
+      const discountAmount = (itemFees * discountRate) / 100;
+      this.SaveinvoiceIDForm.patchValue({ discountAmount: discountAmount.toFixed(2) });
+    } else {
+      this.SaveinvoiceIDForm.patchValue({ discountAmount: '' });
+    }
+  }
+
+  calculateTax1(): void {
+    const taxRate = this.SaveinvoiceIDForm.get('taxRate')?.value;
+    const itemFees = this.SaveinvoiceIDForm.get('itemFees')?.value;
+
+    if (!isNaN(taxRate) && !isNaN(itemFees) && itemFees !== '') {
+      const taxAmount = (itemFees * taxRate) / 100;
+      this.SaveinvoiceIDForm.patchValue({ taxAmount: taxAmount.toFixed(2) });
+    } else {
+      this.SaveinvoiceIDForm.patchValue({ taxAmount: '' });
+    }
+  }
+
+  calculateTotal1(): void {
+    const itemFees = parseFloat(this.SaveinvoiceIDForm.get('itemFees')?.value) || 0;
+    const discountAmount = parseFloat(this.SaveinvoiceIDForm.get('discountAmount')?.value) || 0;
+    const taxAmount = parseFloat(this.SaveinvoiceIDForm.get('taxAmount')?.value) || 0;
+
+    const total = itemFees - discountAmount + taxAmount;
+    this.SaveinvoiceIDForm.patchValue({ itemTotal: total.toFixed(2) });
+  }
+
+  onInputChange1(): void {
+    this.calculateDiscount1();
+    this.calculateTax1();
+    this.calculateTotal1();
+  }
+
+  calculateDiscount2(): void {
+    const discountRate = this.UpdateinvoiceitemForm.get('discountRate')?.value;
+    const itemFees = this.UpdateinvoiceitemForm.get('itemFees')?.value;
+
+    if (!isNaN(discountRate) && !isNaN(itemFees) && itemFees !== '') {
+      const discountAmount = (itemFees * discountRate) / 100;
+      this.UpdateinvoiceitemForm.patchValue({ discountAmount: discountAmount.toFixed(2) });
+    } else {
+      this.UpdateinvoiceitemForm.patchValue({ discountAmount: '' });
+    }
+  }
+
+  calculateTax2(): void {
+    const taxRate = this.UpdateinvoiceitemForm.get('taxRate')?.value;
+    const itemFees = this.UpdateinvoiceitemForm.get('itemFees')?.value;
+
+    if (!isNaN(taxRate) && !isNaN(itemFees) && itemFees !== '') {
+      const taxAmount = (itemFees * taxRate) / 100;
+      this.UpdateinvoiceitemForm.patchValue({ taxAmount: taxAmount.toFixed(2) });
+    } else {
+      this.UpdateinvoiceitemForm.patchValue({ taxAmount: '' });
+    }
+  }
+
+  calculateTotal2(): void {
+    const itemFees = parseFloat(this.UpdateinvoiceitemForm.get('itemFees')?.value) || 0;
+    const discountAmount = parseFloat(this.UpdateinvoiceitemForm.get('discountAmount')?.value) || 0;
+    const taxAmount = parseFloat(this.UpdateinvoiceitemForm.get('taxAmount')?.value) || 0;
+
+    const total = itemFees - discountAmount + taxAmount;
+    this.UpdateinvoiceitemForm.patchValue({ itemTotal: total.toFixed(2) });
+  }
+
+  onInputChange2(): void {
+    this.calculateDiscount2();
+    this.calculateTax2();
+    this.calculateTotal2();
   }
 
   // addLoan
@@ -2386,24 +2987,44 @@ export class ViewCustomerDetailsComponent {
     this.apiservice.saveLoan(this.AddLoanList, this.loandetails).subscribe(
       (response: any) => {
         console.log('SAVE', response.status);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Your data has been saved successfully!'
+        });
       },
       (error: any) => {
         console.error("not working", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        });
       }
     )
   }
 
   //saveCheckBook
   addCheckBook() {
-    this.salesInvoiceList = this.addbankstatement.value;
+    this.salesInvoiceList = this.addbankstatement1.value;
     this.salesInvoiceList.accountNo = this.accountList.accountNo;
     console.log("Check Book ::::::: ", this.salesInvoiceList, this.chequbookdetails);
     this.apiservice.saveCheckBook(this.salesInvoiceList, this.chequbookdetails).subscribe(
       (response: any) => {
         console.log('SAVE', response.status);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Your data has been saved successfully!'
+        });
       },
       (error: any) => {
         console.error("not working", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        });
       }
     )
   }
@@ -2411,15 +3032,25 @@ export class ViewCustomerDetailsComponent {
 
   //savePaySlip
   addPaySlip() {
-    this.salesInvoiceList = this.addbankstatement.value;
+    this.salesInvoiceList = this.addbankstatement1.value;
     this.salesInvoiceList.accountNo = this.accountList.accountNo;
     console.log("Pay Slip ::::::: ", this.salesInvoiceList, this.payslipdetails);
     this.apiservice.savePaySlip(this.salesInvoiceList, this.payslipdetails).subscribe(
       (response: any) => {
         console.log('SAVE', response.status);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Your data has been saved successfully!'
+        });
       },
       (error: any) => {
         console.error("not working", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        });
       }
     )
   }
@@ -2432,9 +3063,19 @@ export class ViewCustomerDetailsComponent {
     this.apiservice.saveInvestment(this.InvestmentList, this.investmentdetails).subscribe(
       (response: any) => {
         console.log('SAVE', response.status);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Your data has been saved successfully!'
+        });
       },
       (error: any) => {
         console.error("not working", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        });
       }
     )
   }
@@ -2447,9 +3088,19 @@ export class ViewCustomerDetailsComponent {
     this.apiservice.saveTaxes(this.TaxList, this.taxdetails).subscribe(
       (response: any) => {
         console.log('SAVE', response.status);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Your data has been saved successfully!'
+        });
       },
       (error: any) => {
         console.error("not working", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        });
       }
     )
   }
@@ -2461,9 +3112,19 @@ export class ViewCustomerDetailsComponent {
     this.apiservice.aof4Form(this.AddCustKYC, this.docImage).subscribe(
       (response: any) => {
         console.log('SAVE', response.status);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Your data has been saved successfully!'
+        });
       },
       (error: any) => {
         console.error("not working", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        });
       }
     )
   }
@@ -2485,10 +3146,19 @@ export class ViewCustomerDetailsComponent {
     console.log("Occupation Income ******************** ::::::: ", this.occupationIncomeList);
     this.apiservice.updateOccupationIncome(this.updateoccupationincome.value).subscribe(
       (response: any) => {
-        console.log('SAVE', response.status);
+        console.log('SAVE', response.status); Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Your data has been saved successfully!'
+        });
       },
       (error: any) => {
         console.error("Not Working", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        });
       }
     )
   }
@@ -2502,9 +3172,19 @@ export class ViewCustomerDetailsComponent {
     this.apiservice.saveAccWriting(this.AccountWritingList, this.accDocumentImage).subscribe(
       (response: any) => {
         console.log('SAVE', response.status);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Your data has been saved successfully!'
+        });
       },
       (error: any) => {
         console.error("not working", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        });
       }
     )
   }
@@ -3376,54 +4056,54 @@ export class ViewCustomerDetailsComponent {
     this.Others = !this.Others;
   }
 
-//Business Registration
-// ProprietorshipRegistration: boolean = false;
-// PartnershipRegistration: boolean = false;
-// CompanyRegistration: boolean = false;
-// TrustAssociation: boolean = false;
-// HUFRegistration: boolean = false;
+  //Business Registration
+  // ProprietorshipRegistration: boolean = false;
+  // PartnershipRegistration: boolean = false;
+  // CompanyRegistration: boolean = false;
+  // TrustAssociation: boolean = false;
+  // HUFRegistration: boolean = false;
 
 
-proprietorshipRegistration() {
-  this.ProprietorshipRegistration = ! this.ProprietorshipRegistration;
-  this.PartnershipRegistration = false;
-  this.CompanyRegistration = false;
-  this.TrustAssociation = false;
-  this.HUFRegistration = false;
-}
+  proprietorshipRegistration() {
+    this.ProprietorshipRegistration = !this.ProprietorshipRegistration;
+    this.PartnershipRegistration = false;
+    this.CompanyRegistration = false;
+    this.TrustAssociation = false;
+    this.HUFRegistration = false;
+  }
 
 
-partnershipRegistration() {
-  this.ProprietorshipRegistration = false;
-  this.PartnershipRegistration = ! this.PartnershipRegistration;
-  this.CompanyRegistration = false;
-  this.TrustAssociation = false;
-  this.HUFRegistration = false;
-}
+  partnershipRegistration() {
+    this.ProprietorshipRegistration = false;
+    this.PartnershipRegistration = !this.PartnershipRegistration;
+    this.CompanyRegistration = false;
+    this.TrustAssociation = false;
+    this.HUFRegistration = false;
+  }
 
-companyRegistration() {
-  this.ProprietorshipRegistration = false;
-  this.PartnershipRegistration = false;
-  this.CompanyRegistration = ! this.CompanyRegistration;
-  this.TrustAssociation = false;
-  this.HUFRegistration = false;
-}
+  companyRegistration() {
+    this.ProprietorshipRegistration = false;
+    this.PartnershipRegistration = false;
+    this.CompanyRegistration = !this.CompanyRegistration;
+    this.TrustAssociation = false;
+    this.HUFRegistration = false;
+  }
 
-trustAssociation() {
-  this.ProprietorshipRegistration = false;
-  this.PartnershipRegistration = false;
-  this.CompanyRegistration = false;
-  this.TrustAssociation = ! this.TrustAssociation;
-  this.HUFRegistration = false;
-}
+  trustAssociation() {
+    this.ProprietorshipRegistration = false;
+    this.PartnershipRegistration = false;
+    this.CompanyRegistration = false;
+    this.TrustAssociation = !this.TrustAssociation;
+    this.HUFRegistration = false;
+  }
 
-hUFRegistration() {
-  this.ProprietorshipRegistration = false;
-  this.PartnershipRegistration = false;
-  this.CompanyRegistration = false;
-  this.TrustAssociation = false;
-  this.HUFRegistration = ! this.HUFRegistration;
-}
+  hUFRegistration() {
+    this.ProprietorshipRegistration = false;
+    this.PartnershipRegistration = false;
+    this.CompanyRegistration = false;
+    this.TrustAssociation = false;
+    this.HUFRegistration = !this.HUFRegistration;
+  }
 
 
   //Loan Service Request
@@ -3445,7 +4125,7 @@ hUFRegistration() {
     this.TransferHomeLoan = false;
     this.TransferBusinessLoan = false;
     this.OverDraft = false;
-    
+
   }
 
 
@@ -3467,9 +4147,9 @@ hUFRegistration() {
     this.TransferHomeLoan = false;
     this.TransferBusinessLoan = false;
     this.OverDraft = false;
-    
-  }  
-  
+
+  }
+
   loanAgainstProperty() {
     this.FreeCreditScore = false;
     this.NewHomeLoan = false;
@@ -3488,9 +4168,9 @@ hUFRegistration() {
     this.TransferHomeLoan = false;
     this.TransferBusinessLoan = false;
     this.OverDraft = false;
-    
-  } 
-  
+
+  }
+
   businessLoan() {
     this.FreeCreditScore = false;
     this.NewHomeLoan = false;
@@ -3509,7 +4189,7 @@ hUFRegistration() {
     this.TransferHomeLoan = false;
     this.TransferBusinessLoan = false;
     this.OverDraft = false;
-    
+
   }
 
 
@@ -3531,7 +4211,7 @@ hUFRegistration() {
     this.TransferHomeLoan = false;
     this.TransferBusinessLoan = false;
     this.OverDraft = false;
-    
+
   }
 
 
@@ -3553,9 +4233,9 @@ hUFRegistration() {
     this.TransferHomeLoan = false;
     this.TransferBusinessLoan = false;
     this.OverDraft = false;
-    
-  }  
-  
+
+  }
+
   loanAgainstSecurity() {
     this.FreeCreditScore = false;
     this.NewHomeLoan = false;
@@ -3574,9 +4254,9 @@ hUFRegistration() {
     this.TransferHomeLoan = false;
     this.TransferBusinessLoan = false;
     this.OverDraft = false;
-    
-  } 
-  
+
+  }
+
   goldLoan() {
     this.FreeCreditScore = false;
     this.NewHomeLoan = false;
@@ -3595,11 +4275,11 @@ hUFRegistration() {
     this.TransferHomeLoan = false;
     this.TransferBusinessLoan = false;
     this.OverDraft = false;
-    
+
   }
 
 
-    
+
   carLoan() {
     this.FreeCreditScore = false;
     this.NewHomeLoan = false;
@@ -3618,7 +4298,7 @@ hUFRegistration() {
     this.TransferHomeLoan = false;
     this.TransferBusinessLoan = false;
     this.OverDraft = false;
-    
+
   }
 
 
@@ -3640,7 +4320,7 @@ hUFRegistration() {
     this.TransferHomeLoan = false;
     this.TransferBusinessLoan = false;
     this.OverDraft = false;
-    
+
   }
 
 
@@ -3662,9 +4342,9 @@ hUFRegistration() {
     this.TransferHomeLoan = false;
     this.TransferBusinessLoan = false;
     this.OverDraft = false;
-    
-  }  
-  
+
+  }
+
   eMICalculatorHomeLoan() {
     this.FreeCreditScore = false;
     this.NewHomeLoan = false;
@@ -3683,9 +4363,9 @@ hUFRegistration() {
     this.TransferHomeLoan = false;
     this.TransferBusinessLoan = false;
     this.OverDraft = false;
-    
-  } 
-  
+
+  }
+
   eligibilityCalculatorHomeLoan() {
     this.FreeCreditScore = false;
     this.NewHomeLoan = false;
@@ -3704,10 +4384,10 @@ hUFRegistration() {
     this.TransferHomeLoan = false;
     this.TransferBusinessLoan = false;
     this.OverDraft = false;
-    
+
   }
 
-  
+
 
   microLoanUnder() {
     this.FreeCreditScore = false;
@@ -3727,7 +4407,7 @@ hUFRegistration() {
     this.TransferHomeLoan = false;
     this.TransferBusinessLoan = false;
     this.OverDraft = false;
-    
+
   }
 
 
@@ -3749,9 +4429,9 @@ hUFRegistration() {
     this.TransferHomeLoan = !this.TransferHomeLoan;
     this.TransferBusinessLoan = false;
     this.OverDraft = false;
-    
-  }  
-  
+
+  }
+
   transferBusinessLoan() {
     this.FreeCreditScore = false;
     this.NewHomeLoan = false;
@@ -3770,9 +4450,9 @@ hUFRegistration() {
     this.TransferHomeLoan = false;
     this.TransferBusinessLoan = !this.TransferBusinessLoan;
     this.OverDraft = false;
-    
-  } 
-  
+
+  }
+
   overDraft() {
     this.FreeCreditScore = false;
     this.NewHomeLoan = false;
@@ -3791,11 +4471,11 @@ hUFRegistration() {
     this.TransferHomeLoan = false;
     this.TransferBusinessLoan = false;
     this.OverDraft = !this.OverDraft;
-    
+
   }
 
-   //Service Requests
-   fraudandDispute() {
+  //Service Requests
+  fraudandDispute() {
     this.FraudandDispute = !this.FraudandDispute;
     this.AccountServiceRequest = false;
     this.DuplicateStatementRequest = false;
@@ -3827,7 +4507,7 @@ hUFRegistration() {
 
 
   //Insurance
-   personalAccidentProtection() {
+  personalAccidentProtection() {
     this.PersonalAccidentProtection = !this.PersonalAccidentProtection;
     this.HealthInsurance = false;
     this.HospitalDailyCashPlans = false;
@@ -3840,7 +4520,7 @@ hUFRegistration() {
     this.CommercialVehicleInsurance = false;
     this.PradhanMantriJivanJyotiBimaYojna = false;
     this.PradhanMantriSurakshaBimaYojna = false;
-    this.MyPolicies = false;    
+    this.MyPolicies = false;
   }
 
   healthInsurance() {
@@ -3856,7 +4536,7 @@ hUFRegistration() {
     this.CommercialVehicleInsurance = false;
     this.PradhanMantriJivanJyotiBimaYojna = false;
     this.PradhanMantriSurakshaBimaYojna = false;
-    this.MyPolicies = false;    
+    this.MyPolicies = false;
   }
 
   hospitalDailyCashPlans() {
@@ -3872,7 +4552,7 @@ hUFRegistration() {
     this.CommercialVehicleInsurance = false;
     this.PradhanMantriJivanJyotiBimaYojna = false;
     this.PradhanMantriSurakshaBimaYojna = false;
-    this.MyPolicies = false;    
+    this.MyPolicies = false;
   }
 
   familyProtectionPlans() {
@@ -3888,7 +4568,7 @@ hUFRegistration() {
     this.CommercialVehicleInsurance = false;
     this.PradhanMantriJivanJyotiBimaYojna = false;
     this.PradhanMantriSurakshaBimaYojna = false;
-    this.MyPolicies = false;    
+    this.MyPolicies = false;
   }
 
   lifeCover() {
@@ -3904,7 +4584,7 @@ hUFRegistration() {
     this.CommercialVehicleInsurance = false;
     this.PradhanMantriJivanJyotiBimaYojna = false;
     this.PradhanMantriSurakshaBimaYojna = false;
-    this.MyPolicies = false;    
+    this.MyPolicies = false;
   }
 
   assuredSavingsPlan() {
@@ -3920,7 +4600,7 @@ hUFRegistration() {
     this.CommercialVehicleInsurance = false;
     this.PradhanMantriJivanJyotiBimaYojna = false;
     this.PradhanMantriSurakshaBimaYojna = false;
-    this.MyPolicies = false;    
+    this.MyPolicies = false;
   }
   guaranteedSavingsPlan() {
     this.PersonalAccidentProtection = false;
@@ -3935,7 +4615,7 @@ hUFRegistration() {
     this.CommercialVehicleInsurance = false;
     this.PradhanMantriJivanJyotiBimaYojna = false;
     this.PradhanMantriSurakshaBimaYojna = false;
-    this.MyPolicies = false;    
+    this.MyPolicies = false;
   }
   twoWheelerInsurance() {
     this.PersonalAccidentProtection = false;
@@ -3950,7 +4630,7 @@ hUFRegistration() {
     this.CommercialVehicleInsurance = false;
     this.PradhanMantriJivanJyotiBimaYojna = false;
     this.PradhanMantriSurakshaBimaYojna = false;
-    this.MyPolicies = false;    
+    this.MyPolicies = false;
   }
   carInsurance() {
     this.PersonalAccidentProtection = false;
@@ -3965,7 +4645,7 @@ hUFRegistration() {
     this.CommercialVehicleInsurance = false;
     this.PradhanMantriJivanJyotiBimaYojna = false;
     this.PradhanMantriSurakshaBimaYojna = false;
-    this.MyPolicies = false;    
+    this.MyPolicies = false;
   }
 
   commercialVehicleInsurance() {
@@ -3981,7 +4661,7 @@ hUFRegistration() {
     this.CommercialVehicleInsurance = !this.CommercialVehicleInsurance;
     this.PradhanMantriJivanJyotiBimaYojna = false;
     this.PradhanMantriSurakshaBimaYojna = false;
-    this.MyPolicies = false;    
+    this.MyPolicies = false;
   }
 
   pradhanMantriJivanJyotiBimaYojna() {
@@ -3997,7 +4677,7 @@ hUFRegistration() {
     this.CommercialVehicleInsurance = false;
     this.PradhanMantriJivanJyotiBimaYojna = !this.PradhanMantriJivanJyotiBimaYojna;
     this.PradhanMantriSurakshaBimaYojna = false;
-    this.MyPolicies = false;    
+    this.MyPolicies = false;
   }
 
   pradhanMantriSurakshaBimaYojna() {
@@ -4013,7 +4693,7 @@ hUFRegistration() {
     this.CommercialVehicleInsurance = false;
     this.PradhanMantriJivanJyotiBimaYojna = false;
     this.PradhanMantriSurakshaBimaYojna = !this.PradhanMantriSurakshaBimaYojna;
-    this.MyPolicies = false;    
+    this.MyPolicies = false;
   }
 
   myPolicies() {
@@ -4029,7 +4709,7 @@ hUFRegistration() {
     this.CommercialVehicleInsurance = false;
     this.PradhanMantriJivanJyotiBimaYojna = false;
     this.PradhanMantriSurakshaBimaYojna = false;
-    this.MyPolicies = !this.MyPolicies;    
+    this.MyPolicies = !this.MyPolicies;
   }
 
 
