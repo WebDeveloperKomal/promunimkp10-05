@@ -119,11 +119,14 @@
               </div>
     
     
-              <p><input class="w-100 search" type="text"  [(ngModel)]="SearchText"
-                  (input)="applyFilter()" placeholder="search" aria-controls="branch_datatable">
-               
-    
-              </p>
+              <p> <input 
+                class="w-100 search" 
+                type="text" 
+                style="border-radius: 20px;" 
+                [(ngModel)]="SearchText"
+                (input)="applyFilter()" 
+                placeholder="search" 
+                aria-controls="branch_datatable">
               <!-- <p><input *ngIf="insertemployee" type="button" routerLink="/set/add-employee" class="btn-info btn"
                   style="border-radius: 20px; padding: 5px 25px;float: right; margin-left: 10px;" value="Add Employee">
               </p> -->

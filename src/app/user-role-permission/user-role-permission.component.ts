@@ -339,12 +339,17 @@ public layOutSetting : LayoutModel = {
     const searchString = this.SearchText.toLowerCase();
     // const filteredData = [...this.RolesList];
     this.RolesList = this.OriginalRoleList.filter((data) =>
-      data.departmentName.toLowerCase().includes(searchString) ||
-      data.parentId.toLowerCase().includes(searchString) ||
-      data.roleName.toLowerCase().includes(searchString) 
+      (data.departmentName?.toLowerCase() ?? '').includes(searchString) ||
+      (data.parentId?.toLowerCase() ?? '').includes(searchString) ||
+      (data.roleName.toLowerCase() ?? '').includes(searchString)
+
+      // data.departmentName.toLowerCase().includes(searchString) ||
+      // data.parentId.toLowerCase().includes(searchString) ||
+      // data.roleName.toLowerCase().includes(searchString) 
     );
 
   }
+  
   refreshCountries() {
     this.countries = this.RolesList
       .map((country, i) => ({id: i + 1, ...country}))

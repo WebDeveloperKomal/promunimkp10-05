@@ -153,19 +153,19 @@ edit(id : any){
 
 applyFilter(): void {
   const searchString = this.SearchText.toLowerCase();
-  // const filteredData = [...this.dataarray];
-  this.allCust = this.originalallCust.filter((data) =>
+  this.allCust = this.originalallCust.filter((data) => 
     data.companyName.toLowerCase().includes(searchString) ||
     data.customerFullName.toLowerCase().includes(searchString) ||
     data.branch.toLowerCase().includes(searchString) ||
     (data.customerId !== null && !isNaN(data.customerId) && data.customerId.toString().includes(searchString)) ||
     (data.accountNo !== null && !isNaN(data.accountNo) && data.accountNo.toString().includes(searchString))
-    // data.branchaddress.toLowerCase().includes(searchString)
   );
+  this.refreshCountries();  // Refresh the displayed countries after filtering
 }
+
 refreshCountries() {
-  // this.countries = this.dataarray
-  //   .map((country, i) => ({id: i + 1, ...country}))
-  //   .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+  this.countries = this.allCust
+    .map((country, i) => ({ id: i + 1, ...country }))
+    .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
 }
 }

@@ -298,18 +298,18 @@ ShowDetails(data : any){
   this.selecteddata = data;
    this.loadEmployeeData();
 }
-applyFilter(): void {
-  const searchString = this.SearchText.toLowerCase();
-  // const filteredData = [...this.temCustomerList];
-  this.temCustomerList = this.originalCustomerList.filter((data) =>
-    data.tempCustCompanyName.toLowerCase().includes(searchString) ||
-    data.tempCustFullName.toLowerCase().includes(searchString) ||
-    data.tempCustContactNo.toLowerCase().includes(searchString) ||
-    data.attendedByFN.toLowerCase().includes(searchString) ||
-    data.attendedByLN.toLowerCase().includes(searchString) ||
-    data.tempCustCreationDate.toLowerCase().includes(searchString) ||
-    data.tempCustBranchName.toLowerCase().includes(searchString)
-  );
+  applyFilter(): void {
+    const searchString = this.SearchText.toLowerCase();
+    // const filteredData = [...this.temCustomerList];
+    this.temCustomerList = this.originalCustomerList.filter((data) =>
+      (data.tempCustCompanyName?.toLowerCase() ?? '').includes(searchString) ||
+      (data.tempCustFullName?.toLowerCase() ?? '').includes(searchString) ||
+      (data.tempCustContactNo?.toLowerCase() ?? '').includes(searchString) ||
+      (data.attendedByFN?.toLowerCase() ?? '').includes(searchString) ||
+      (data.attendedByLN?.toLowerCase() ?? '').includes(searchString) ||
+      (data.tempCustCreationDate?.toLowerCase() ?? '').includes(searchString) ||
+      (data.tempCustBranchName?.toLowerCase() ?? '').includes(searchString)
+    );
 
   // tempCustId : any;
   // tempCustCompanyName: any;
