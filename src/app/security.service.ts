@@ -12,9 +12,9 @@ export class SecurityService {
 
   constructor(private http : HttpClient) {}
 
-  baseUrl="https://clientportal.promunim.com/";
+  // baseUrl="http://95.217.70.147:8080/promunim/";
   // baseUrl="http://localhost:8181";
-  // baseUrl = "http://95.217.70.147:8080/apromunim/"
+  baseUrl = "http://95.217.70.147:8080/promunim"
   Login(credentials:{email:string,password:string})
   {
     this.credentials=credentials;

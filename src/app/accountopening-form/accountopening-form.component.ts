@@ -388,7 +388,7 @@ export class AccountopeningFormComponent {
 
     // );
 
-    this.http.get<any>('https://clientportal.promunim.com/send/get-branch')
+    this.http.get<any>('http://95.217.70.147:8080/promunim/send/get-branch')
     .subscribe(Response => {
       if (Response.status) {
         this.getAllBranch = Response.data;
@@ -1262,7 +1262,7 @@ allgetapiforaof(){
   openDocumentModal() {
     const dialogRef = this.dialog.open(DemoComponent, {
       width: 'auto', // Adjust width as needed
-      data: { documentUrl: 'https://clientportal.promunim.com/send/getFile/' + this.pandata.fileName}
+      data: { documentUrl: 'http://95.217.70.147:8080/promunim/send/getFile/' + this.pandata.fileName}
     });
   }
   toggleImageVisibility() {

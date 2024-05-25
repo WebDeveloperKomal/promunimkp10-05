@@ -388,3 +388,26 @@ input , select{
  left: 12px;
     /* top: 5px; */
 }
+
+.container-fluid.mt-3 {
+    height: 800px; /* Set the desired height */
+    overflow-y: scroll; /* Enable vertical scrolling */
+    /* border: 1px solid #ccc; Optional: Add a border for better visibility */
+  }
+  .content {
+    height: 1000px; /* Example content height to demonstrate scrolling */
+  }
+
+ 
+  .item {
+    background: none;
+    border: none;
+    text-align: center;
+    height: 225px;
+    color: #004C8C;
+    margin: 10px;
+    flex: 1 0 21%; /* Adjust the basis percentage to control the number of items per row */
+    box-sizing: border-box;
+  }
+  
+  

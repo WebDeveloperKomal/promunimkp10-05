@@ -2419,7 +2419,7 @@ export class ViewCustomerDetailsComponent {
 
   picFile(documentName: string) {
     // Constructing the document URL
-    let url = `https://clientportal.promunim.com/send/getFile/${documentName}`;
+    let url = `http://95.217.70.147:8080/promunim/send/getFile/${documentName}`;
 
     // Open the document in a new window/tab
     window.open(url);
@@ -2687,9 +2687,9 @@ export class ViewCustomerDetailsComponent {
     if (this.signitury && this.signitury[0] && this.signitury[0].photo) {
       let filePath = localStorage.getItem('photoEmp');
       console.log('filePath :::::::: ', this.photoEmp1);
-      let url = `https://clientportal.promunim.com/auth/getFile/${this.photoEmp1}`;
+      let url = `http://95.217.70.147:8080/promunim/auth/getFile/${this.photoEmp1}`;
       // console.log('SONAAAAAAAAAAAA',url );
-      const photoURL = `${`https://clientportal.promunim.com/auth/getFile`}/${this.photoEmp1}`;
+      const photoURL = `${`http://95.217.70.147:8080/promunim/auth/getFile`}/${this.photoEmp1}`;
       console.log("File URL: ", url);
       this.apiservice.getFile(this.photoEmp1).subscribe(
         (response: any) => {

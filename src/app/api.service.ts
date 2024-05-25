@@ -5,13 +5,15 @@ import { HttpClient } from '@angular/common/http'
 })
 export class ApiService {
 
-  baseUrl="https://clientportal.promunim.com/auth";
-  baseUrl1="https://clientportal.promunim.com/send";
+  // baseUrl="http://95.217.70.147:8080/promunim/auth";
+  // baseUrl1="http://95.217.70.147:8080/promunim/send";
   // baseUrl = "http://localhost:8181/auth";
   // baseUrl1 = "http://localhost:8181/send";
   
-  // baseUrl = "http://95.217.70.147:8080/apromunim/auth"
-  // baseUrl1 = "http://95.217.70.147:8080/apromunim/send"
+  
+
+  baseUrl = "http://95.217.70.147:8080/promunim/auth"
+  baseUrl1 = "http://95.217.70.147:8080/promunim/send"
   constructor(private http: HttpClient) {}
 
 
@@ -582,12 +584,12 @@ export class ApiService {
   
 
 
-  // 1.	https://clientportal.promunim.com/send/get-all-branch-details/{tid}/{cudt_id}/{account_number}
-  // 2.	 https://clientportal.promunim.com/send/get_customer-docs/{tid}
-  // 3.	 https://clientportal.promunim.com/send/get-offline-pan/{tid}
-  // 4.	https://clientportal.promunim.com/send/get-offline-adahar/{tid}
-//   1.	https://clientportal.promunim.com/send/get-constitutions
-// 2.	https://clientportal.promunim.com/send/get-doc-type-by-id)/2  
+  // 1.	http://95.217.70.147:8080/promunim/send/get-all-branch-details/{tid}/{cudt_id}/{account_number}
+  // 2.	 http://95.217.70.147:8080/promunim/send/get_customer-docs/{tid}
+  // 3.	 http://95.217.70.147:8080/promunim/send/get-offline-pan/{tid}
+  // 4.	http://95.217.70.147:8080/promunim/send/get-offline-adahar/{tid}
+//   1.	http://95.217.70.147:8080/promunim/send/get-constitutions
+// 2.	http://95.217.70.147:8080/promunim/send/get-doc-type-by-id)/2  
 
   /**************** AOF Form  *************/
   TidDetails(tid: any): any { //Running

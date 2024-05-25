@@ -38,7 +38,7 @@ throw new Error('Method not implemented.');
 
     // url: 'https://ej2services.syncfusion.com/production/web-services/api/Schedule',
 
-    // url: 'https://clientportal.promunim.com/auth/get-employee-tasks',
+    // url: 'http://95.217.70.147:8080/promunim/auth/get-employee-tasks',
     // adaptor: new ODataV4Adaptor,
     // crossDomain: true ,
     // credentials: 'include'
@@ -161,7 +161,7 @@ addTask(): void {
 //   //  })
      
 
-//     // url: 'https://clientportal.promunim.com/auth/get-employee-tasks',
+//     // url: 'http://95.217.70.147:8080/promunim/auth/get-employee-tasks',
 //     // adaptor: new ODataV4Adaptor,
 //     // crossDomain: true ,
 //     // credentials: 'include'
